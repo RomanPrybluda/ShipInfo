@@ -15,18 +15,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\AuxiliaryEngineManufacturer\" />
-    <Folder Include="Services\AuxiliaryEngine\" />
-    <Folder Include="Services\Generator\" />
-    <Folder Include="Services\MainEngineManufacturer\" />
-    <Folder Include="Services\GeneratorManufacturer\" />
-    <Folder Include="Services\MainEngine\" />
-    <Folder Include="Services\Operator\" />
-    <Folder Include="Services\Owner\" />
-    <Folder Include="Services\Shipbuilder\" />
-    <Folder Include="Services\ShipPowerPlantType\" />
-    <Folder Include="Services\ShipPropulsorType\" />
-    <Folder Include="Services\Status\" />
+    <Folder Include="Services\AuxiliaryEngineManufacturer\DTO\" />
+    <Folder Include="Services\AuxiliaryEngine\DTO\" />
+    <Folder Include="Services\GeneratorManufacturer\DTO\" />
+    <Folder Include="Services\Generator\DTO\" />
+    <Folder Include="Services\MainEngineManufacturer\DTO\" />
+    <Folder Include="Services\MainEngine\DTO\" />
+    <Folder Include="Services\Operator\DTO\" />
+    <Folder Include="Services\Owner\DTO\" />
+    <Folder Include="Services\Shipbuilder\DTO\" />
+    <Folder Include="Services\ShipPowerPlantType\DTO\" />
+    <Folder Include="Services\ShipPropulsorType\DTO\" />
+    <Folder Include="Services\Status\DTO\" />
   </ItemGroup>
 
 </Project>
