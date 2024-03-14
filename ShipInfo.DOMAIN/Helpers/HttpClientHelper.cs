@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Domain.Exceptions;
+using Newtonsoft.Json;
 using ShipInfo.DOMAIN;
 
 namespace Domain.Helpers
