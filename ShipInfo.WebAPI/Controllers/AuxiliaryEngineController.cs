@@ -6,6 +6,8 @@ namespace ShipInfo.WebAPI
     [ApiController]
     [Produces("application/json")]
     [Route("auxiliary-engines")]
+    // [Authorize]
+    // [Authorize(Roles = "Admin")]
 
     public class AuxiliaryEngineController : ControllerBase
     {

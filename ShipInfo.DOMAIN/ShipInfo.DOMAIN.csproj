@@ -23,7 +23,7 @@
     <Folder Include="Services\MainEngine\DTO\" />
     <Folder Include="Services\Operator\DTO\" />
     <Folder Include="Services\Owner\DTO\" />
-    <Folder Include="Services\Shipbuilder\DTO\" />
+    <Folder Include="Services\ShipBuilder\DTO\" />
     <Folder Include="Services\ShipPowerPlantType\DTO\" />
     <Folder Include="Services\ShipPropulsorType\DTO\" />
     <Folder Include="Services\Status\DTO\" />

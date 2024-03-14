@@ -1,6 +1,6 @@
 ﻿namespace ShipInfo.DAL
 {
-    public class ClassSociety : Base
+    public class ClassSociety
     {
         public Guid Id { get; set; }
 

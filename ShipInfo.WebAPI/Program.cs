@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShipInfo.DAL;
 using ShipInfo.DOMAIN;
@@ -10,13 +11,27 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ShipService>();
-builder.Services.AddScoped<ClassSocietyService>();
-builder.Services.AddScoped<ShipTypeService>();
-builder.Services.AddScoped<ShipFlagService>();
+builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AuxiliaryEngineService>();
+builder.Services.AddScoped<AuxiliaryEngineManufacturerService>();
+builder.Services.AddScoped<ClassSocietyService>();
+builder.Services.AddScoped<GeneratorService>();
+builder.Services.AddScoped<GeneratorManufacturerService>();
+builder.Services.AddScoped<JWTService>();
+builder.Services.AddScoped<MainEngineService>();
+builder.Services.AddScoped<MainEngineManufacturerService>();
+builder.Services.AddScoped<OperatorService>();
+builder.Services.AddScoped<OwnerService>();
+builder.Services.AddScoped<ShipService>();
+builder.Services.AddScoped<ShipBuilderService>();
+builder.Services.AddScoped<ShipFlagService>();
+builder.Services.AddScoped<ShipPowerPlantTypeService>();
+builder.Services.AddScoped<ShipPropulsorTypeService>();
+builder.Services.AddScoped<ShipTypeService>();
+builder.Services.AddScoped<StatusService>();
 
 
+builder.Services.AddIdentityCore<AppUser>().AddRoles<IdentityRole>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
