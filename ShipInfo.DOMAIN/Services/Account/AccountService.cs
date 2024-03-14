@@ -1,5 +1,4 @@
-﻿using Domain.Services.JWT;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using ShipInfo.DAL;
 
 
