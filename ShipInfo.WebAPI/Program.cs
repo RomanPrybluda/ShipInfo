@@ -12,6 +12,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ShipService>();
 builder.Services.AddScoped<ClassSocietyService>();
+builder.Services.AddScoped<ShipTypeService>();
+builder.Services.AddScoped<ShipFlagService>();
+builder.Services.AddScoped<AuxiliaryEngineService>();
+
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

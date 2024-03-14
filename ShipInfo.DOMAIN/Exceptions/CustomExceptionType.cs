@@ -9,7 +9,9 @@ namespace ShipInfo.DOMAIN
         IncorrectCityName = 4,
         ShipAlreadyExist = 5,
         ClassSocietyAlreadyExist = 6,
-        UserIsAlreadyExists = 7,
-        InvalidInputData = 8,
+        ShipTypeAlreadyExists = 7,
+        ShipFlagAlreadyExists = 8,
+        UserIsAlreadyExists = 9,
+        InvalidInputData = 10,
     }
 }

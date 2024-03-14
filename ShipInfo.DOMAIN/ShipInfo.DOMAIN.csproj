@@ -14,4 +14,19 @@
     <ProjectReference Include="..\ShipInfo.DAL\ShipInfo.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\AuxiliaryEngineManufacturer\" />
+    <Folder Include="Services\AuxiliaryEngine\" />
+    <Folder Include="Services\Generator\" />
+    <Folder Include="Services\MainEngineManufacturer\" />
+    <Folder Include="Services\GeneratorManufacturer\" />
+    <Folder Include="Services\MainEngine\" />
+    <Folder Include="Services\Operator\" />
+    <Folder Include="Services\Owner\" />
+    <Folder Include="Services\Shipbuilder\" />
+    <Folder Include="Services\ShipPowerPlantType\" />
+    <Folder Include="Services\ShipPropulsorType\" />
+    <Folder Include="Services\Status\" />
+  </ItemGroup>
+
 </Project>

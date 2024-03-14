@@ -7,5 +7,6 @@
         public string? ShipTypeName { get; set; }
 
         public ICollection<Ship>? Ships { get; set; }
+
     }
 }
