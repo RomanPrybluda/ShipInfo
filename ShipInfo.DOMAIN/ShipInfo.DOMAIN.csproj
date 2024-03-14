@@ -16,8 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\AuxiliaryEngineManufacturer\DTO\" />
-    <Folder Include="Services\AuxiliaryEngine\DTO\" />
     <Folder Include="Services\GeneratorManufacturer\DTO\" />
     <Folder Include="Services\Generator\DTO\" />
     <Folder Include="Services\MainEngineManufacturer\DTO\" />

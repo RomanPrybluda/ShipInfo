@@ -44,10 +44,10 @@ namespace ShipInfo.DOMAIN
 
         public async Task<AuxiliaryEngineDTO> CreateAuxiliaryEngineAsync(CreateAuxiliaryEngineDTO request)
         {
-            var existingAuxiliaryEngine = await _context.AuxiliaryEngines.FirstOrDefaultAsync(ae => ae.Name == request.Name);
+            var existingAuxiliaryEngine = await _context.AuxiliaryEngines.FirstOrDefaultAsync(ae => ae.AuxiliaryEngineType == request.AuxiliaryEngineType);
 
             if (existingAuxiliaryEngine != null)
-                throw new CustomException(CustomExceptionType.AuxiliaryEngineAlreadyExists, $"Auxiliary Engine {request.Name} already exists.");
+                throw new CustomException(CustomExceptionType.AuxiliaryEngineAlreadyExists, $"Auxiliary Engine {request.AuxiliaryEngineType} already exists.");
 
             var auxiliaryEngineDTO = await CreateAuxiliaryEngineDTO.ToAuxiliaryEngineAsync(request);
 
@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (auxiliaryEngine == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Auxiliary Engine found with ID {id}");
 
-            request.UpdateAuxiliaryEngine(auxiliaryEngine, request.Name);
+            request.UpdateAuxiliaryEngine(auxiliaryEngine, request);
 
             await _context.SaveChangesAsync();
 

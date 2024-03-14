@@ -6,11 +6,11 @@ namespace ShipInfo.DOMAIN
     {
         public string? ShipTypeName { get; set; }
 
-        public static async Task<ShipType> ToShipTypeAsync(CreateShipTypeDTO shipType)
+        public static async Task<ShipType> ToShipTypeAsync(CreateShipTypeDTO shipTypeDTO)
         {
             return new ShipType
             {
-                ShipTypeName = shipType.ShipTypeName
+                ShipTypeName = shipTypeDTO.ShipTypeName
             };
         }
     }

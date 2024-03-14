@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShipInfo.DOMAIN;
 using System.ComponentModel.DataAnnotations;
 
 namespace ShipInfo.WebAPI

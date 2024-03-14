@@ -6,9 +6,9 @@ namespace ShipInfo.DOMAIN
     {
         public string? ShipTypeName { get; set; }
 
-        public void UpdateShipType(ShipType shipType, string shipTypeName)
+        public void UpdateShipType(ShipType shipType, UpdateShipTypeDTO updateShipTypeDTO)
         {
-            shipType.ShipTypeName = shipTypeName;
+            shipType.ShipTypeName = updateShipTypeDTO.ShipTypeName;
         }
 
     }

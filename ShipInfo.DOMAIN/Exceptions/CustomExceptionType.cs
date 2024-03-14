@@ -22,6 +22,7 @@ namespace ShipInfo.DOMAIN
         MainEngineAlreadyExists = 17,
         GeneratorManufacturerAlreadyExists = 18,
         GeneratorAlreadyExists = 19,
-        AuxiliaryEngineAlreadyExists = 20
+        AuxiliaryEngineAlreadyExists = 20,
+        AuxiliaryEngineManufacturerAlreadyExists = 21
     }
 }

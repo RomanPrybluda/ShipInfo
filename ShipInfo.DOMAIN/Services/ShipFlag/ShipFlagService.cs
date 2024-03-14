@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (shipFlag == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Ship Flag found with ID {id}");
 
-            request.UpdateShipFlag(shipFlag, request.ShipFlagName);
+            request.UpdateShipFlag(shipFlag, request);
 
             await _context.SaveChangesAsync();
 

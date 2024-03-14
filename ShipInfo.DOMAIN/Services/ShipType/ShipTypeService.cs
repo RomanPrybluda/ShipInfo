@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (shipType == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Ship Type found with ID {id}");
 
-            request.UpdateShipType(shipType, request.ShipTypeName);
+            request.UpdateShipType(shipType, request);
 
             await _context.SaveChangesAsync();
 

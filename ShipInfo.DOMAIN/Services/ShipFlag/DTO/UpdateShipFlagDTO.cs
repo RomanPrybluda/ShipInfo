@@ -6,9 +6,9 @@ namespace ShipInfo.DOMAIN
     {
         public string? ShipFlagName { get; set; }
 
-        public void UpdateShipFlag(ShipFlag shipFlag, string shipFlagName)
+        public void UpdateShipFlag(ShipFlag shipFlag, UpdateShipFlagDTO updateShipFlagDTO)
         {
-            shipFlag.ShipFlagName = shipFlagName;
+            shipFlag.ShipFlagName = updateShipFlagDTO.ShipFlagName;
         }
 
     }

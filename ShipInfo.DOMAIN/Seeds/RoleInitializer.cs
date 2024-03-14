@@ -1,8 +1,4 @@
-﻿using DAL.Models;
-using DAL.Models.Constants;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using ShipInfo.DAL;
 
 namespace Domain.Seeds
