@@ -1,6 +1,6 @@
 ﻿namespace ShipInfo.DAL
 {
-    public class ShipHull : Base
+    public class ShipHull
     {
 
         public Guid Id { get; set; }

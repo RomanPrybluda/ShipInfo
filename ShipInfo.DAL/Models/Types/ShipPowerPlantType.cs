@@ -1,6 +1,6 @@
 ﻿namespace ShipInfo.DAL
 {
-    public class ShipPowerPlantType : Base
+    public class ShipPowerPlantType
     {
         public Guid Id { get; set; }
 

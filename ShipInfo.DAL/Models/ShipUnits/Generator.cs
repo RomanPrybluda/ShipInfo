@@ -1,6 +1,6 @@
 ﻿namespace ShipInfo.DAL
 {
-    public class Generator : Base
+    public class Generator
     {
         public Guid Id { get; set; }
 

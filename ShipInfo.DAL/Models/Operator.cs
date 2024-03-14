@@ -1,6 +1,6 @@
 ﻿namespace ShipInfo.DAL
 {
-    public class Operator : Base
+    public class Operator
     {
         public Guid Id { get; set; }
 
