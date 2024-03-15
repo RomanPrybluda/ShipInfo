@@ -44,10 +44,10 @@ namespace ShipInfo.DOMAIN
 
         public async Task<MainEngineManufacturerDTO> CreateMainEngineManufacturerAsync(CreateMainEngineManufacturerDTO request)
         {
-            var existingManufacturer = await _context.MainEngineManufacturers.FirstOrDefaultAsync(m => m.MainEngineManufacturerName == request.Name);
+            var existingManufacturer = await _context.MainEngineManufacturers.FirstOrDefaultAsync(m => m.MainEngineManufacturerName == request.MainEngineManufacturerName);
 
             if (existingManufacturer != null)
-                throw new CustomException(CustomExceptionType.MainEngineManufacturerAlreadyExists, $"Main Engine Manufacturer {request.Name} already exists.");
+                throw new CustomException(CustomExceptionType.MainEngineManufacturerAlreadyExists, $"Main Engine Manufacturer {request.MainEngineManufacturerName} already exists.");
 
             var mainEngineManufacturerDTO = await CreateMainEngineManufacturerDTO.ToMainEngineManufacturerAsync(request);
 
@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (manufacturer == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Main Engine Manufacturer found with ID {id}");
 
-            request.UpdateMainEngineManufacturer(manufacturer, request.Name);
+            request.UpdateMainEngineManufacturer(manufacturer, request);
 
             await _context.SaveChangesAsync();
 

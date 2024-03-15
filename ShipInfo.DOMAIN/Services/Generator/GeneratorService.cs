@@ -44,10 +44,10 @@ namespace ShipInfo.DOMAIN
 
         public async Task<GeneratorDTO> CreateGeneratorAsync(CreateGeneratorDTO request)
         {
-            var existingGenerator = await _context.Generators.FirstOrDefaultAsync(g => g.GeneratorType == request.Type);
+            var existingGenerator = await _context.Generators.FirstOrDefaultAsync(g => g.GeneratorType == request.GeneratorType);
 
             if (existingGenerator != null)
-                throw new CustomException(CustomExceptionType.GeneratorAlreadyExists, $"Generator {request.Type} already exists.");
+                throw new CustomException(CustomExceptionType.GeneratorAlreadyExists, $"Generator {request.GeneratorType} already exists.");
 
             var generatorDTO = await CreateGeneratorDTO.ToGeneratorAsync(request);
 
@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (generator == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Generator found with ID {id}");
 
-            request.UpdateGenerator(generator, request.Name);
+            request.UpdateGenerator(generator, request);
 
             await _context.SaveChangesAsync();
 

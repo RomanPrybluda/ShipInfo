@@ -24,9 +24,5 @@ namespace ShipInfo.DOMAIN
         [MaxLength(25)]
         public string LastName { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Age must be a positive number.")]
-        public int? Age { get; set; }
-
-
     }
 }

@@ -44,10 +44,10 @@ namespace ShipInfo.DOMAIN
 
         public async Task<ShipPowerPlantTypeDTO> CreateShipPowerPlantTypeAsync(CreateShipPowerPlantTypeDTO request)
         {
-            var existingShipPowerPlantType = await _context.ShipPowerPlantTypes.FirstOrDefaultAsync(st => st.PowerPlantTypeName == request.PowerPlantTypeName);
+            var existingShipPowerPlantType = await _context.ShipPowerPlantTypes.FirstOrDefaultAsync(st => st.ShipPowerPlantTypeName == request.ShipPowerPlantTypeName);
 
             if (existingShipPowerPlantType != null)
-                throw new CustomException(CustomExceptionType.ShipPowerPlantTypeAlreadyExists, $"Ship Power Plant Type {request.PowerPlantTypeName} already exists.");
+                throw new CustomException(CustomExceptionType.ShipPowerPlantTypeAlreadyExists, $"Ship Power Plant Type {request.ShipPowerPlantTypeName} already exists.");
 
             var shipPowerPlantTypeDTO = await CreateShipPowerPlantTypeDTO.ToShipPowerPlantTypeAsync(request);
 
@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (shipPowerPlantType == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Ship Power Plant Type found with ID {id}");
 
-            request.UpdateShipPowerPlantType(shipPowerPlantType, request.PowerPlantTypeName);
+            request.UpdateShipPowerPlantType(shipPowerPlantType, request);
 
             await _context.SaveChangesAsync();
 

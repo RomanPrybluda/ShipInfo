@@ -44,10 +44,10 @@ namespace ShipInfo.DOMAIN
 
         public async Task<MainEngineDTO> CreateMainEngineAsync(CreateMainEngineDTO request)
         {
-            var existingMainEngine = await _context.MainEngines.FirstOrDefaultAsync(me => me.MainEngineType == request.Type);
+            var existingMainEngine = await _context.MainEngines.FirstOrDefaultAsync(me => me.MainEngineType == request.MainEngineType);
 
             if (existingMainEngine != null)
-                throw new CustomException(CustomExceptionType.MainEngineAlreadyExists, $"Main Engine {request.Type} already exists.");
+                throw new CustomException(CustomExceptionType.MainEngineAlreadyExists, $"Main Engine {request.MainEngineType} already exists.");
 
             var mainEngineDTO = await CreateMainEngineDTO.ToMainEngineAsync(request);
 
@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (mainEngine == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Main Engine found with ID {id}");
 
-            request.UpdateMainEngine(mainEngine, request.Model);
+            request.UpdateMainEngine(mainEngine, request);
 
             await _context.SaveChangesAsync();
 

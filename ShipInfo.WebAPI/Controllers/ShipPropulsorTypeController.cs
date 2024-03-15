@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("ship-propulsor-types")]
+    [Route("ship-propulsor-type")]
 
     public class ShipPropulsorTypeController : ControllerBase
     {

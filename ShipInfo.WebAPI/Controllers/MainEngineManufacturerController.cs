@@ -6,7 +6,8 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("main-engine-manufacturers")]
+    [Route("main-engine-manufacturer")]
+
     public class MainEngineManufacturerController : ControllerBase
     {
         private readonly MainEngineManufacturerService _mainEngineManufacturerService;

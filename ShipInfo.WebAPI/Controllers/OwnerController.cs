@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("owners")]
+    [Route("owner")]
 
     public class OwnerController : ControllerBase
     {

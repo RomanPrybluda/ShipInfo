@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("main-engines")]
+    [Route("main-engine")]
 
     public class MainEngineController : ControllerBase
     {

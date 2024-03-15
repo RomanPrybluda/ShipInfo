@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("generators")]
+    [Route("generator")]
 
     public class GeneratorController : ControllerBase
     {

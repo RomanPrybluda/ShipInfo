@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShipInfo.DOMAIN;
 using System.ComponentModel.DataAnnotations;
 
 namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("auxiliary-engines")]
-    // [Authorize]
-    // [Authorize(Roles = "Admin")]
+    [Route("auxiliary-engine")]
 
     public class AuxiliaryEngineController : ControllerBase
     {

@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (status == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Status found with ID {id}");
 
-            request.UpdateStatus(status, request.StatusName);
+            request.UpdateStatus(status, request);
 
             await _context.SaveChangesAsync();
 

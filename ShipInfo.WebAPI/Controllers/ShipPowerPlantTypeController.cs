@@ -6,7 +6,8 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("ship-power-plant-types")]
+    [Route("ship-power-plant-type")]
+
     public class ShipPowerPlantTypeController : ControllerBase
     {
         private readonly ShipPowerPlantTypeService _shipPowerPlantTypeService;

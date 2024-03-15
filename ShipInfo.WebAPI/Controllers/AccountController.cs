@@ -5,7 +5,8 @@ using ShipInfo.DOMAIN;
 namespace ShipInfo.WebAPI
 {
     [ApiController]
-    [Authorize]
+    [Produces("application/json")]
+    //[Authorize]
     [Route("account")]
 
     public class AccountController : ControllerBase

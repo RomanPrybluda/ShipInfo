@@ -6,7 +6,8 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("operators")]
+    [Route("operator")]
+
     public class OperatorController : ControllerBase
     {
         private readonly OperatorService _operatorService;

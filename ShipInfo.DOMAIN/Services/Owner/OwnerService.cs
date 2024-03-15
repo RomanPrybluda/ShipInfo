@@ -44,10 +44,10 @@ namespace ShipInfo.DOMAIN
 
         public async Task<OwnerDTO> CreateOwnerAsync(CreateOwnerDTO request)
         {
-            var existingOwner = await _context.Owners.FirstOrDefaultAsync(o => o.OwnerName == request.Name);
+            var existingOwner = await _context.Owners.FirstOrDefaultAsync(o => o.OwnerName == request.OwnerName);
 
             if (existingOwner != null)
-                throw new CustomException(CustomExceptionType.OwnerAlreadyExists, $"Owner {request.Name} already exists.");
+                throw new CustomException(CustomExceptionType.OwnerAlreadyExists, $"Owner {request.OwnerName} already exists.");
 
             var ownerDTO = await CreateOwnerDTO.ToOwnerAsync(request);
 
@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (owner == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Owner found with ID {id}");
 
-            request.UpdateOwner(owner, request.Name);
+            request.UpdateOwner(owner, request);
 
             await _context.SaveChangesAsync();
 

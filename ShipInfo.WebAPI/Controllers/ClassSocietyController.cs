@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("class-societies")]
+    [Route("class-society")]
 
     public class ClassSocietyController : ControllerBase
     {

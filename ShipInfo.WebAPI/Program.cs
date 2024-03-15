@@ -1,14 +1,23 @@
+using Domain.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShipInfo.DAL;
 using ShipInfo.DOMAIN;
 using ShipInfo.WebAPI;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddHttpClient();
+
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<AccountService>();
@@ -31,7 +40,7 @@ builder.Services.AddScoped<ShipTypeService>();
 builder.Services.AddScoped<StatusService>();
 
 
-builder.Services.AddIdentityCore<AppUser>().AddRoles<IdentityRole>();
+builder.Services.AddIdentityCore<AppUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -40,6 +49,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 var app = builder.Build();
+
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -96,6 +107,13 @@ using (var scope = app.Services.CreateScope())
 
     var shipInitializer = new ShipInitializer(context);
     shipInitializer.InitializeShips();
+
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await RoleInitializer.InitializeRole(roleManager);
+
+    //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    //await AdminInitializer.InitializeRole(userManager, configuration);
+
 }
 
 if (app.Environment.IsDevelopment())
@@ -104,10 +122,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
-app.MapControllers();
+app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();

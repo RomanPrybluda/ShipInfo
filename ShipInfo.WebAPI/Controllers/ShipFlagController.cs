@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("ship-flags")]
+    [Route("ship-flag")]
 
     public class ShipFlagController : ControllerBase
     {

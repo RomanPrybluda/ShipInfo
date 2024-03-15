@@ -44,10 +44,10 @@ namespace ShipInfo.DOMAIN
 
         public async Task<GeneratorManufacturerDTO> CreateGeneratorManufacturerAsync(CreateGeneratorManufacturerDTO request)
         {
-            var existingGeneratorManufacturer = await _context.GeneratorManufacturers.FirstOrDefaultAsync(gm => gm.Name == request.Name);
+            var existingGeneratorManufacturer = await _context.GeneratorManufacturers.FirstOrDefaultAsync(gm => gm.GeneratorManufacturerName == request.GeneratorManufacturerName);
 
             if (existingGeneratorManufacturer != null)
-                throw new CustomException(CustomExceptionType.GeneratorManufacturerAlreadyExists, $"Generator Manufacturer {request.Name} already exists.");
+                throw new CustomException(CustomExceptionType.GeneratorManufacturerAlreadyExists, $"Generator Manufacturer {request.GeneratorManufacturerName} already exists.");
 
             var generatorManufacturerDTO = await CreateGeneratorManufacturerDTO.ToGeneratorManufacturerAsync(request);
 
@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (generatorManufacturer == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Generator Manufacturer found with ID {id}");
 
-            request.UpdateGeneratorManufacturer(generatorManufacturer, request.Name);
+            request.UpdateGeneratorManufacturer(generatorManufacturer, request);
 
             await _context.SaveChangesAsync();
 

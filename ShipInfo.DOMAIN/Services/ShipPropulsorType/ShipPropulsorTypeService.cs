@@ -44,10 +44,10 @@ namespace ShipInfo.DOMAIN
 
         public async Task<ShipPropulsorTypeDTO> CreateShipPropulsorTypeAsync(CreateShipPropulsorTypeDTO request)
         {
-            var existingShipPropulsorType = await _context.ShipPropulsorTypes.FirstOrDefaultAsync(st => st.PropulsorTypeName == request.PropulsorTypeName);
+            var existingShipPropulsorType = await _context.ShipPropulsorTypes.FirstOrDefaultAsync(st => st.ShipPropulsorTypeName == request.ShipPropulsorTypeName);
 
             if (existingShipPropulsorType != null)
-                throw new CustomException(CustomExceptionType.ShipPropulsorTypeAlreadyExists, $"Ship Propulsor Type {request.PropulsorTypeName} already exists.");
+                throw new CustomException(CustomExceptionType.ShipPropulsorTypeAlreadyExists, $"Ship Propulsor Type {request.ShipPropulsorTypeName} already exists.");
 
             var shipPropulsorTypeDTO = await CreateShipPropulsorTypeDTO.ToShipPropulsorTypeAsync(request);
 
@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (shipPropulsorType == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Ship Propulsor Type found with ID {id}");
 
-            request.UpdateShipPropulsorType(shipPropulsorType, request.PropulsorTypeName);
+            request.UpdateShipPropulsorType(shipPropulsorType, request);
 
             await _context.SaveChangesAsync();
 

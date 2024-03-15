@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("auxiliary-engine-manufacturers")]
+    [Route("auxiliary-engine-manufacturer")]
 
     public class AuxiliaryEngineManufacturerController : ControllerBase
     {

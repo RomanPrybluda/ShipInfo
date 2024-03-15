@@ -44,10 +44,10 @@ namespace ShipInfo.DOMAIN
 
         public async Task<OperatorDTO> CreateOperatorAsync(CreateOperatorDTO request)
         {
-            var existingOperator = await _context.Operators.FirstOrDefaultAsync(o => o.OperatorName == request.Name);
+            var existingOperator = await _context.Operators.FirstOrDefaultAsync(o => o.OperatorName == request.OperatorName);
 
             if (existingOperator != null)
-                throw new CustomException(CustomExceptionType.OperatorAlreadyExists, $"Operator {request.Name} already exists.");
+                throw new CustomException(CustomExceptionType.OperatorAlreadyExists, $"Operator {request.OperatorName} already exists.");
 
             var operatorDTO = await CreateOperatorDTO.ToOperatorAsync(request);
 
@@ -69,7 +69,7 @@ namespace ShipInfo.DOMAIN
             if (op == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Operator found with ID {id}");
 
-            request.UpdateOperator(op, request.Name);
+            request.UpdateOperator(op, request);
 
             await _context.SaveChangesAsync();
 

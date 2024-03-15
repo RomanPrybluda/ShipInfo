@@ -15,17 +15,4 @@
     <ProjectReference Include="..\ShipInfo.DAL\ShipInfo.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\GeneratorManufacturer\DTO\" />
-    <Folder Include="Services\Generator\DTO\" />
-    <Folder Include="Services\MainEngineManufacturer\DTO\" />
-    <Folder Include="Services\MainEngine\DTO\" />
-    <Folder Include="Services\Operator\DTO\" />
-    <Folder Include="Services\Owner\DTO\" />
-    <Folder Include="Services\ShipBuilder\DTO\" />
-    <Folder Include="Services\ShipPowerPlantType\DTO\" />
-    <Folder Include="Services\ShipPropulsorType\DTO\" />
-    <Folder Include="Services\Status\DTO\" />
-  </ItemGroup>
-
 </Project>

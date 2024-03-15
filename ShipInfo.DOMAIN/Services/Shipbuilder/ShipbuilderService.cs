@@ -19,12 +19,12 @@ namespace ShipInfo.DOMAIN
             if (shipBuilders == null || !shipBuilders.Any())
                 throw new CustomException(CustomExceptionType.NotFound, "No ShipBuilders found");
 
-            var shipBuilderDTOs = new List<shipBuilderDTO>();
+            var shipBuilderDTOs = new List<ShipBuilderDTO>();
 
-            foreach (var ShipBuilder in shipBuilders)
+            foreach (var shipBuilder in shipBuilders)
             {
-                var ShipBuilderDTO = await shipBuilderDTO.ToShipBuilderDTOAsync(ShipBuilder);
-                shipBuilderDTOs.Add(ShipBuilderDTO);
+                var shipBuilderDTO = await ShipBuilderDTO.ToShipBuilderDTOAsync(shipBuilder);
+                shipBuilderDTOs.Add(shipBuilderDTO);
             }
 
             return shipBuilderDTOs;
@@ -37,17 +37,17 @@ namespace ShipInfo.DOMAIN
             if (shipBuilder == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No ShipBuilder found with ID {id}");
 
-            var ShipBuilderDTO = await shipBuilderDTO.ToShipBuilderDTOAsync(ShipBuilder);
+            var shipBuilderDTO = await ShipBuilderDTO.ToShipBuilderDTOAsync(shipBuilder);
 
-            return ShipBuilderDTO;
+            return shipBuilderDTO;
         }
 
         public async Task<ShipBuilderDTO> CreateShipBuilderAsync(CreateShipBuilderDTO request)
         {
-            var existingShipBuilder = await _context.ShipBuilders.FirstOrDefaultAsync(sb => sb.ShipBuilderName == request.Name);
+            var existingShipBuilder = await _context.ShipBuilders.FirstOrDefaultAsync(sb => sb.ShipBuilderName == request.ShipBuilderName);
 
             if (existingShipBuilder != null)
-                throw new CustomException(CustomExceptionType.ShipBuilderAlreadyExists, $"ShipBuilder {request.Name} already exists.");
+                throw new CustomException(CustomExceptionType.ShipBuilderAlreadyExists, $"ShipBuilder {request.ShipBuilderName} already exists.");
 
             var shipBuilderDTO = await CreateShipBuilderDTO.ToShipBuilderAsync(request);
 
@@ -57,7 +57,7 @@ namespace ShipInfo.DOMAIN
 
             var ShipBuilder = await _context.ShipBuilders.FindAsync(shipBuilderDTO.Id);
 
-            var createdShipBuilder = await shipBuilderDTO.ToShipBuilderDTOAsync(ShipBuilder);
+            var createdShipBuilder = await ShipBuilderDTO.ToShipBuilderDTOAsync(ShipBuilder);
 
             return createdShipBuilder;
         }
@@ -69,13 +69,13 @@ namespace ShipInfo.DOMAIN
             if (shipBuilder == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No ShipBuilder found with ID {id}");
 
-            request.UpdateShipBuilder(shipBuilder, request.Name);
+            request.UpdateShipBuilder(shipBuilder, request);
 
             await _context.SaveChangesAsync();
 
             var updatedShipBuilderEntity = await _context.ShipBuilders.FindAsync(id);
 
-            var updatedShipBuilderDTO = await shipBuilderDTO.ToShipBuilderDTOAsync(updatedShipBuilderEntity);
+            var updatedShipBuilderDTO = await ShipBuilderDTO.ToShipBuilderDTOAsync(updatedShipBuilderEntity);
 
             return updatedShipBuilderDTO;
         }
