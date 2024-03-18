@@ -12,15 +12,15 @@ namespace ShipInfo.DOMAIN
 
         public Guid MainEngineManufacturerId { get; set; }
 
-        public static async Task<MainEngine> ToMainEngineAsync(CreateMainEngineDTO createMainEngineDTO)
+        public static MainEngine ToMainEngineAsync(CreateMainEngineDTO mainEngine)
         {
             return new MainEngine
             {
 
-                MainEngineType = createMainEngineDTO.MainEngineType,
-                MaxMainEnginePower = createMainEngineDTO.MaxMainEnginePower,
-                MaxMainEngineSpeed = createMainEngineDTO.MaxMainEngineSpeed,
-                MainEngineManufacturerId = createMainEngineDTO.MainEngineManufacturerId
+                MainEngineType = mainEngine.MainEngineType,
+                MaxMainEnginePower = mainEngine.MaxMainEnginePower,
+                MaxMainEngineSpeed = mainEngine.MaxMainEngineSpeed,
+                MainEngineManufacturerId = mainEngine.MainEngineManufacturerId
             };
 
         }

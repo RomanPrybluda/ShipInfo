@@ -49,6 +49,11 @@ namespace ShipInfo.DOMAIN
             if (existingGenerator != null)
                 throw new CustomException(CustomExceptionType.GeneratorAlreadyExists, $"Generator {request.GeneratorType} already exists.");
 
+            var generatorManufacturer = await _context.GeneratorManufacturers.FindAsync(request.GeneratorManufacturerId);
+
+            if (generatorManufacturer == null)
+                throw new CustomException(CustomExceptionType.NotFound, $"No Generator Manufacturer found with ID {request.GeneratorManufacturerId}");
+
             var generatorDTO = await CreateGeneratorDTO.ToGeneratorAsync(request);
 
             _context.Generators.Add(generatorDTO);
@@ -68,6 +73,11 @@ namespace ShipInfo.DOMAIN
 
             if (generator == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Generator found with ID {id}");
+
+            var generatorManufacturer = await _context.GeneratorManufacturers.FindAsync(request.GeneratorManufacturerId);
+
+            if (generatorManufacturer == null)
+                throw new CustomException(CustomExceptionType.NotFound, $"No Generator Manufacturer found with ID {request.GeneratorManufacturerId}");
 
             request.UpdateGenerator(generator, request);
 

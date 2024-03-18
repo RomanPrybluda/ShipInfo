@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShipInfo.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,8 +58,8 @@ namespace ShipInfo.DAL.Migrations
                 name: "AuxiliaryEngineManufacturers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AuxiliaryEngineManufacturerName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    AuxiliaryEngineManufacturerName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,9 +70,10 @@ namespace ShipInfo.DAL.Migrations
                 name: "ClassSocieties",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClassSocietyName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    ClassSocietyCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    ClassSocietyName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ClassSocietyCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClassSocietyIsIACS = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,8 +84,8 @@ namespace ShipInfo.DAL.Migrations
                 name: "GeneratorManufacturers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GeneratorManufacturerName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    GeneratorManufacturerName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,8 +96,8 @@ namespace ShipInfo.DAL.Migrations
                 name: "MainEngineManufacturers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MainEngineManufacturerName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    MainEngineManufacturerName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,7 +108,7 @@ namespace ShipInfo.DAL.Migrations
                 name: "Operators",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     OperatorName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     OperatorAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OperatorEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -122,7 +123,7 @@ namespace ShipInfo.DAL.Migrations
                 name: "Owners",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     OwnerName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     OwnerAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OwnerEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -137,8 +138,8 @@ namespace ShipInfo.DAL.Migrations
                 name: "ShipBuilders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShipBuilderName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    ShipBuilderName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,8 +150,8 @@ namespace ShipInfo.DAL.Migrations
                 name: "ShipFlags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShipFlagName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    ShipFlagName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,31 +159,11 @@ namespace ShipInfo.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShipHulls",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OverAllLength = table.Column<double>(type: "float", nullable: false),
-                    BetweenPerpendicularsLength = table.Column<double>(type: "float", nullable: false),
-                    Breadth = table.Column<double>(type: "float", nullable: false),
-                    Depth = table.Column<double>(type: "float", nullable: false),
-                    SummerDraught = table.Column<double>(type: "float", nullable: false),
-                    SummerFreeBoard = table.Column<double>(type: "float", nullable: false),
-                    Lightship = table.Column<double>(type: "float", nullable: false),
-                    Displacement = table.Column<double>(type: "float", nullable: false),
-                    VolumeDisplacement = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShipHulls", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ShipPowerPlantTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShipPowerPlantTypeName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    ShipPowerPlantTypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -193,8 +174,8 @@ namespace ShipInfo.DAL.Migrations
                 name: "ShipPropulsorTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShipPropulsorTypeName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    ShipPropulsorTypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,8 +186,8 @@ namespace ShipInfo.DAL.Migrations
                 name: "ShipTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShipTypeName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    ShipTypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -217,7 +198,7 @@ namespace ShipInfo.DAL.Migrations
                 name: "Statuses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     StatusName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
@@ -335,10 +316,10 @@ namespace ShipInfo.DAL.Migrations
                 name: "AuxiliaryEngines",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     AuxiliaryEngineType = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    MaxAuxiliaryEnginePower = table.Column<int>(type: "int", maxLength: 30, nullable: false),
-                    MaxAuxiliaryEngineSpeed = table.Column<int>(type: "int", maxLength: 30, nullable: false),
+                    MaxAuxiliaryEnginePower = table.Column<int>(type: "int", nullable: false),
+                    MaxAuxiliaryEngineSpeed = table.Column<int>(type: "int", nullable: false),
                     AuxiliaryEngineManufacturerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -356,7 +337,7 @@ namespace ShipInfo.DAL.Migrations
                 name: "Generators",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     GeneratorType = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     MaxGeneratorPower = table.Column<int>(type: "int", nullable: false),
                     GeneratorVoltage = table.Column<int>(type: "int", nullable: false),
@@ -377,7 +358,7 @@ namespace ShipInfo.DAL.Migrations
                 name: "MainEngines",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     MainEngineType = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     MaxMainEnginePower = table.Column<int>(type: "int", nullable: false),
                     MaxMainEngineSpeed = table.Column<int>(type: "int", nullable: false),
@@ -398,18 +379,27 @@ namespace ShipInfo.DAL.Migrations
                 name: "Ships",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ImoNumber = table.Column<string>(type: "nvarchar(max)", precision: 7, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    ImoNumber = table.Column<int>(type: "int", precision: 7, nullable: false),
                     ShipName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     ShipTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShipFlagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CallSign = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CallSign = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClassSocietyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateOfBuild = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StatusId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GrossTonnage = table.Column<double>(type: "float", nullable: false),
                     NetTonnage = table.Column<double>(type: "float", nullable: false),
                     SummerDeadweight = table.Column<double>(type: "float", nullable: false),
+                    OverAllLength = table.Column<double>(type: "float", nullable: false),
+                    BetweenPerpendicularsLength = table.Column<double>(type: "float", nullable: false),
+                    Breadth = table.Column<double>(type: "float", nullable: false),
+                    Depth = table.Column<double>(type: "float", nullable: false),
+                    SummerDraught = table.Column<double>(type: "float", nullable: false),
+                    SummerFreeBoard = table.Column<double>(type: "float", nullable: false),
+                    Lightship = table.Column<double>(type: "float", nullable: false),
+                    Displacement = table.Column<double>(type: "float", nullable: false),
+                    VolumeDisplacement = table.Column<double>(type: "float", nullable: false),
                     ShipPowerPlantTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShipPropulsorTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MainEngineQuantity = table.Column<int>(type: "int", nullable: false),
@@ -420,8 +410,7 @@ namespace ShipInfo.DAL.Migrations
                     GeneratorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShipBuilderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OperatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShipHullId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    OperatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -472,12 +461,6 @@ namespace ShipInfo.DAL.Migrations
                         name: "FK_Ships_ShipFlags_ShipFlagId",
                         column: x => x.ShipFlagId,
                         principalTable: "ShipFlags",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Ships_ShipHulls_ShipHullId",
-                        column: x => x.ShipHullId,
-                        principalTable: "ShipHulls",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -563,38 +546,32 @@ namespace ShipInfo.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_AuxiliaryEngineId",
                 table: "Ships",
-                column: "AuxiliaryEngineId",
-                unique: true);
+                column: "AuxiliaryEngineId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_ClassSocietyId",
                 table: "Ships",
-                column: "ClassSocietyId",
-                unique: true);
+                column: "ClassSocietyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_GeneratorId",
                 table: "Ships",
-                column: "GeneratorId",
-                unique: true);
+                column: "GeneratorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_MainEngineId",
                 table: "Ships",
-                column: "MainEngineId",
-                unique: true);
+                column: "MainEngineId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_OperatorId",
                 table: "Ships",
-                column: "OperatorId",
-                unique: true);
+                column: "OperatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_OwnerId",
                 table: "Ships",
-                column: "OwnerId",
-                unique: true);
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_ShipBuilderId",
@@ -604,38 +581,27 @@ namespace ShipInfo.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_ShipFlagId",
                 table: "Ships",
-                column: "ShipFlagId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ships_ShipHullId",
-                table: "Ships",
-                column: "ShipHullId",
-                unique: true);
+                column: "ShipFlagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_ShipPowerPlantTypeId",
                 table: "Ships",
-                column: "ShipPowerPlantTypeId",
-                unique: true);
+                column: "ShipPowerPlantTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_ShipPropulsorTypeId",
                 table: "Ships",
-                column: "ShipPropulsorTypeId",
-                unique: true);
+                column: "ShipPropulsorTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_ShipTypeId",
                 table: "Ships",
-                column: "ShipTypeId",
-                unique: true);
+                column: "ShipTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_StatusId",
                 table: "Ships",
-                column: "StatusId",
-                unique: true);
+                column: "StatusId");
         }
 
         /// <inheritdoc />
@@ -688,9 +654,6 @@ namespace ShipInfo.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "ShipFlags");
-
-            migrationBuilder.DropTable(
-                name: "ShipHulls");
 
             migrationBuilder.DropTable(
                 name: "ShipPowerPlantTypes");

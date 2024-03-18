@@ -49,6 +49,11 @@ namespace ShipInfo.DOMAIN
             if (existingAuxiliaryEngine != null)
                 throw new CustomException(CustomExceptionType.AuxiliaryEngineAlreadyExists, $"Auxiliary Engine {request.AuxiliaryEngineType} already exists.");
 
+            var manufacturer = await _context.AuxiliaryEngineManufacturers.FindAsync(request.AuxiliaryEngineManufacturerId);
+
+            if (manufacturer == null)
+                throw new CustomException(CustomExceptionType.NotFound, $"No Auxiliary Engine Manufacturer found with ID {request.AuxiliaryEngineManufacturerId}");
+
             var auxiliaryEngineDTO = await CreateAuxiliaryEngineDTO.ToAuxiliaryEngineAsync(request);
 
             _context.AuxiliaryEngines.Add(auxiliaryEngineDTO);
@@ -68,6 +73,11 @@ namespace ShipInfo.DOMAIN
 
             if (auxiliaryEngine == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Auxiliary Engine found with ID {id}");
+
+            var manufacturer = await _context.AuxiliaryEngineManufacturers.FindAsync(request.AuxiliaryEngineManufacturerId);
+
+            if (manufacturer == null)
+                throw new CustomException(CustomExceptionType.NotFound, $"No Auxiliary Engine Manufacturer found with ID {request.AuxiliaryEngineManufacturerId}");
 
             request.UpdateAuxiliaryEngine(auxiliaryEngine, request);
 

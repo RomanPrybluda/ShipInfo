@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("main-engine-manufacturer")]
+    [Route("main-engine-manufacturers")]
 
     public class MainEngineManufacturerController : ControllerBase
     {
@@ -18,35 +18,35 @@ namespace ShipInfo.WebAPI
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllMainEngineManufacturers()
+        public async Task<ActionResult> GetAllMainEngineManufacturersAsync()
         {
             var mainEngineManufacturers = await _mainEngineManufacturerService.GetMainEngineManufacturersListAsync();
             return Ok(mainEngineManufacturers);
         }
 
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult> GetMainEngineManufacturerById([Required] Guid id)
+        public async Task<ActionResult> GetMainEngineManufacturerByIdAsync([Required] Guid id)
         {
             var mainEngineManufacturer = await _mainEngineManufacturerService.GetMainEngineManufacturerByIdAsync(id);
             return Ok(mainEngineManufacturer);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateMainEngineManufacturer([FromBody][Required] CreateMainEngineManufacturerDTO request)
+        public async Task<ActionResult> CreateMainEngineManufacturerAsync([FromBody][Required] CreateMainEngineManufacturerDTO request)
         {
             var mainEngineManufacturer = await _mainEngineManufacturerService.CreateMainEngineManufacturerAsync(request);
             return Ok(mainEngineManufacturer);
         }
 
         [HttpPut("{id:Guid}")]
-        public async Task<ActionResult> UpdateMainEngineManufacturer(Guid id, [FromBody][Required] UpdateMainEngineManufacturerDTO request)
+        public async Task<ActionResult> UpdateMainEngineManufacturerAsync(Guid id, [FromBody][Required] UpdateMainEngineManufacturerDTO request)
         {
             var mainEngineManufacturer = await _mainEngineManufacturerService.UpdateMainEngineManufacturerAsync(id, request);
             return Ok(mainEngineManufacturer);
         }
 
         [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult> DeleteMainEngineManufacturer([Required] Guid id)
+        public async Task<ActionResult> DeleteMainEngineManufacturerAsync([Required] Guid id)
         {
             await _mainEngineManufacturerService.DeleteMainEngineManufacturerAsync(id);
             return NoContent();

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShipInfo.DAL;
+﻿using ShipInfo.DAL;
 
 namespace ShipInfo.DOMAIN
 {
@@ -21,27 +20,25 @@ namespace ShipInfo.DOMAIN
 
         public double SummerDeadweight { get; set; }
 
-        public static async Task<ShipDTO> ToShipDTOAsync(Ship ship, AppDbContext context)
-        {
-            var shipDTO = await context.Ships
-                .Where(s => s.Id == ship.Id)
-                .Select(s => new ShipDTO
-                {
-                    Id = s.Id,
-                    ImoNumber = s.ImoNumber,
-                    ShipName = s.ShipName,
-                    DateOfBuild = s.DateOfBuild,
-                    GrossTonnage = s.GrossTonnage,
-                    SummerDeadweight = s.SummerDeadweight,
-                    ShipTypeName = context.ShipTypes
-                            .FirstOrDefault(st => st.Id == s.ShipTypeId) != null ? context.ShipTypes
-                            .First(st => st.Id == s.ShipTypeId).ShipTypeName : null,
-                    StatusName = context.Statuses
-                            .FirstOrDefault(st => st.Id == s.StatusId) != null ? context.Statuses.First(st => st.Id == s.StatusId).StatusName : null
-                })
-                .FirstOrDefaultAsync();
+        public string? ShipFlagName { get; set; }
 
-            return shipDTO;
+        public static ShipDTO ShipToShipDTO(Ship ship, AppDbContext context)
+        {
+
+            return new ShipDTO
+            {
+                Id = ship.Id,
+                ImoNumber = ship.ImoNumber,
+                ShipName = ship.ShipName,
+                DateOfBuild = ship.DateOfBuild,
+                GrossTonnage = ship.GrossTonnage,
+                SummerDeadweight = ship.SummerDeadweight,
+                ShipTypeName = context.ShipTypes.FirstOrDefault(st => st.Id == ship.ShipTypeId)?.ShipTypeName,
+                StatusName = context.Statuses.FirstOrDefault(st => st.Id == ship.StatusId)?.StatusName,
+                ShipFlagName = context.ShipFlags.FirstOrDefault(st => st.Id == ship.ShipFlagId)?.ShipFlagName
+            };
+
+
         }
 
     }

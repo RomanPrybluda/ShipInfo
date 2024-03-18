@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("generator")]
+    [Route("generators")]
 
     public class GeneratorController : ControllerBase
     {
@@ -18,35 +18,35 @@ namespace ShipInfo.WebAPI
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllGenerators()
+        public async Task<ActionResult> GetAllGeneratorsAsync()
         {
             var generators = await _generatorService.GetGeneratorsListAsync();
             return Ok(generators);
         }
 
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult> GetGeneratorById([Required] Guid id)
+        public async Task<ActionResult> GetGeneratorByIdAsync([Required] Guid id)
         {
             var generator = await _generatorService.GetGeneratorByIdAsync(id);
             return Ok(generator);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateGenerator([FromBody][Required] CreateGeneratorDTO request)
+        public async Task<ActionResult> CreateGeneratorAsync([FromBody][Required] CreateGeneratorDTO request)
         {
             var generator = await _generatorService.CreateGeneratorAsync(request);
             return Ok(generator);
         }
 
         [HttpPut("{id:Guid}")]
-        public async Task<ActionResult> UpdateGenerator(Guid id, [FromBody][Required] UpdateGeneratorDTO request)
+        public async Task<ActionResult> UpdateGeneratorAsync(Guid id, [FromBody][Required] UpdateGeneratorDTO request)
         {
             var generator = await _generatorService.UpdateGeneratorAsync(id, request);
             return Ok(generator);
         }
 
         [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult> DeleteGenerator([Required] Guid id)
+        public async Task<ActionResult> DeleteGeneratorAsync([Required] Guid id)
         {
             await _generatorService.DeleteGeneratorAsync(id);
             return NoContent();

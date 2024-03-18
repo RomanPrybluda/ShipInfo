@@ -12,8 +12,8 @@ using ShipInfo.DAL;
 namespace ShipInfo.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240308021746_migrarion14")]
-    partial class migrarion14
+    [Migration("20240318173025_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -251,11 +251,9 @@ namespace ShipInfo.DAL.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("MaxAuxiliaryEnginePower")
-                        .HasMaxLength(30)
                         .HasColumnType("int");
 
                     b.Property<int>("MaxAuxiliaryEngineSpeed")
-                        .HasMaxLength(30)
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -460,8 +458,13 @@ namespace ShipInfo.DAL.Migrations
                     b.Property<int>("AuxiliaryEngineQuantity")
                         .HasColumnType("int");
 
+                    b.Property<double>("BetweenPerpendicularsLength")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Breadth")
+                        .HasColumnType("float");
+
                     b.Property<string>("CallSign")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ClassSocietyId")
@@ -469,6 +472,12 @@ namespace ShipInfo.DAL.Migrations
 
                     b.Property<DateTime>("DateOfBuild")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("Depth")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Displacement")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("GeneratorId")
                         .HasColumnType("uniqueidentifier");
@@ -483,6 +492,9 @@ namespace ShipInfo.DAL.Migrations
                         .HasPrecision(7)
                         .HasColumnType("int");
 
+                    b.Property<double>("Lightship")
+                        .HasColumnType("float");
+
                     b.Property<Guid>("MainEngineId")
                         .HasColumnType("uniqueidentifier");
 
@@ -494,6 +506,9 @@ namespace ShipInfo.DAL.Migrations
 
                     b.Property<Guid>("OperatorId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("OverAllLength")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
@@ -522,6 +537,15 @@ namespace ShipInfo.DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("SummerDeadweight")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SummerDraught")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SummerFreeBoard")
+                        .HasColumnType("float");
+
+                    b.Property<double>("VolumeDisplacement")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
@@ -585,45 +609,6 @@ namespace ShipInfo.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ShipFlags");
-                });
-
-            modelBuilder.Entity("ShipInfo.DAL.ShipHull", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<double>("BetweenPerpendicularsLength")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Breadth")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Depth")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Displacement")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Lightship")
-                        .HasColumnType("float");
-
-                    b.Property<double>("OverAllLength")
-                        .HasColumnType("float");
-
-                    b.Property<double>("SummerDraught")
-                        .HasColumnType("float");
-
-                    b.Property<double>("SummerFreeBoard")
-                        .HasColumnType("float");
-
-                    b.Property<double>("VolumeDisplacement")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ShipHulls");
                 });
 
             modelBuilder.Entity("ShipInfo.DAL.ShipPowerPlantType", b =>
@@ -877,17 +862,6 @@ namespace ShipInfo.DAL.Migrations
                     b.Navigation("Status");
                 });
 
-            modelBuilder.Entity("ShipInfo.DAL.ShipHull", b =>
-                {
-                    b.HasOne("ShipInfo.DAL.Ship", "Ship")
-                        .WithOne("ShipHull")
-                        .HasForeignKey("ShipInfo.DAL.ShipHull", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ship");
-                });
-
             modelBuilder.Entity("ShipInfo.DAL.AuxiliaryEngine", b =>
                 {
                     b.Navigation("Ships");
@@ -931,11 +905,6 @@ namespace ShipInfo.DAL.Migrations
             modelBuilder.Entity("ShipInfo.DAL.Owner", b =>
                 {
                     b.Navigation("Ships");
-                });
-
-            modelBuilder.Entity("ShipInfo.DAL.Ship", b =>
-                {
-                    b.Navigation("ShipHull");
                 });
 
             modelBuilder.Entity("ShipInfo.DAL.ShipBuilder", b =>

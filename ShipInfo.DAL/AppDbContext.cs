@@ -18,8 +18,6 @@ namespace ShipInfo.DAL
 
         public DbSet<ShipType> ShipTypes { get; set; }
 
-        public DbSet<ShipHull> ShipHulls { get; set; }
-
         public DbSet<ShipPowerPlantType> ShipPowerPlantTypes { get; set; }
 
         public DbSet<ShipPropulsorType> ShipPropulsorTypes { get; set; }
@@ -54,8 +52,6 @@ namespace ShipInfo.DAL
             new ShipConfiguration().Configure(modelBuilder.Entity<Ship>());
 
             new ShipTypeConfiguration().Configure(modelBuilder.Entity<ShipType>());
-
-            new ShipHullConfiguration().Configure(modelBuilder.Entity<ShipHull>());
 
             new ShipPowerPlantTypeConfiguration().Configure(modelBuilder.Entity<ShipPowerPlantType>());
 

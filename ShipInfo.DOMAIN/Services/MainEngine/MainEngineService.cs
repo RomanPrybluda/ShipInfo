@@ -23,7 +23,7 @@ namespace ShipInfo.DOMAIN
 
             foreach (var mainEngine in mainEngines)
             {
-                var mainEngineDTO = await MainEngineDTO.ToMainEngineDTOAsync(mainEngine);
+                var mainEngineDTO = MainEngineDTO.ToMainEngineDTOAsync(mainEngine);
                 mainEngineDTOs.Add(mainEngineDTO);
             }
 
@@ -37,7 +37,7 @@ namespace ShipInfo.DOMAIN
             if (mainEngine == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Main Engine found with ID {id}");
 
-            var mainEngineDTO = await MainEngineDTO.ToMainEngineDTOAsync(mainEngine);
+            var mainEngineDTO = MainEngineDTO.ToMainEngineDTOAsync(mainEngine);
 
             return mainEngineDTO;
         }
@@ -49,7 +49,12 @@ namespace ShipInfo.DOMAIN
             if (existingMainEngine != null)
                 throw new CustomException(CustomExceptionType.MainEngineAlreadyExists, $"Main Engine {request.MainEngineType} already exists.");
 
-            var mainEngineDTO = await CreateMainEngineDTO.ToMainEngineAsync(request);
+            var manufacturer = await _context.MainEngineManufacturers.FindAsync(request.MainEngineManufacturerId);
+
+            if (manufacturer == null)
+                throw new CustomException(CustomExceptionType.NotFound, $"No Main Engine Manufacturer found with ID {request.MainEngineManufacturerId}");
+
+            var mainEngineDTO = CreateMainEngineDTO.ToMainEngineAsync(request);
 
             _context.MainEngines.Add(mainEngineDTO);
 
@@ -57,7 +62,7 @@ namespace ShipInfo.DOMAIN
 
             var mainEngine = await _context.MainEngines.FindAsync(mainEngineDTO.Id);
 
-            var createdMainEngine = await MainEngineDTO.ToMainEngineDTOAsync(mainEngine);
+            var createdMainEngine = MainEngineDTO.ToMainEngineDTOAsync(mainEngine);
 
             return createdMainEngine;
         }
@@ -69,13 +74,18 @@ namespace ShipInfo.DOMAIN
             if (mainEngine == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Main Engine found with ID {id}");
 
+            var manufacturer = await _context.MainEngineManufacturers.FindAsync(request.MainEngineManufacturerId);
+
+            if (manufacturer == null)
+                throw new CustomException(CustomExceptionType.NotFound, $"No Main Engine Manufacturer found with ID {request.MainEngineManufacturerId}");
+
             request.UpdateMainEngine(mainEngine, request);
 
             await _context.SaveChangesAsync();
 
             var updatedMainEngineEntity = await _context.MainEngines.FindAsync(id);
 
-            var updatedMainEngineDTO = await MainEngineDTO.ToMainEngineDTOAsync(updatedMainEngineEntity);
+            var updatedMainEngineDTO = MainEngineDTO.ToMainEngineDTOAsync(updatedMainEngineEntity);
 
             return updatedMainEngineDTO;
         }

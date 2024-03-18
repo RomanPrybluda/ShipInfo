@@ -20,7 +20,13 @@ namespace ShipInfo.DOMAIN
         readonly int generatorQuantity = 3;
         readonly double kGrossTonnage = 3.024076387;
         readonly double kNetTonnage = 0.916476439;
-
+        double kOverAllLength = 1.044188;
+        double kBreadth = 0.177301456;
+        double kDepth = 0.542467452;
+        double kSummerDraught = 0.72;
+        double kLightship = 10.23;
+        double kVolumeDisplacement = 0.626169;
+        double seaWaterDensity = 1.025;
 
         public ShipInitializer(AppDbContext context)
         {
@@ -43,6 +49,16 @@ namespace ShipInfo.DOMAIN
                     }
                     while (_context.Ships.Any(ship => ship.ImoNumber == imoNumber));
 
+                    var BetweenPerpendicularsLength = _random.Next(86, 181);
+                    var OverAllLength = BetweenPerpendicularsLength * kOverAllLength;
+                    var Breadth = BetweenPerpendicularsLength * kBreadth;
+                    var Depth = Breadth * kDepth;
+                    var SummerDraught = Depth * kSummerDraught;
+                    var SummerFreeBoard = (Depth - SummerDraught) * 1000 + 40;
+                    var Lightship = BetweenPerpendicularsLength * Breadth * Depth / kLightship;
+                    var VolumeDisplacement = BetweenPerpendicularsLength * Breadth * Depth / kVolumeDisplacement;
+                    var Displacement = VolumeDisplacement * seaWaterDensity;
+
                     var shipName = _shipData.GetShipName(ShipData.ShipNames);
                     var dateOfBuild = ShipData.GenerateRandomDate();
                     var statusId = _shipData.GetRandomStatusId(ShipData.ShipStatuses);
@@ -50,7 +66,6 @@ namespace ShipInfo.DOMAIN
                     var sallSign = _shipData.GenerateRandomCallSign(callSingLenth);
                     var shipPowerPlantTypeId = _shipData.GetShipPowerPlantTypeId(ShipData.powerPlantTypeName);
                     var shipPropulsorTypeId = _shipData.GetShipPropulsorTypeId(ShipData.powerPropulsorTypeName);
-                    var shipHull = _shipData.GetShipHull();
                     var mainEngine = _shipData.GetRandomEntity(_context.MainEngines);
 
                     if (mainEngine.MaxMainEnginePower < separateMainEnginePower)
@@ -73,14 +88,13 @@ namespace ShipInfo.DOMAIN
                         ShipName = shipName,
                         DateOfBuild = dateOfBuild,
                         CallSign = sallSign,
-                        ShipHullId = shipHull.Id,
                         StatusId = statusId,
                         ShipTypeId = shipTypeId,
                         ShipPowerPlantTypeId = shipPowerPlantTypeId,
                         ShipPropulsorTypeId = shipPropulsorTypeId,
-                        SummerDeadweight = shipHull.Displacement - shipHull.Lightship,
-                        GrossTonnage = kGrossTonnage * shipHull.Displacement,
-                        NetTonnage = kNetTonnage * kGrossTonnage * shipHull.Displacement,
+                        SummerDeadweight = Displacement - Lightship,
+                        GrossTonnage = kGrossTonnage * Displacement,
+                        NetTonnage = kNetTonnage * kGrossTonnage * Displacement,
                         MainEngineQuantity = mainEngineQuantity,
                         AuxiliaryEngineQuantity = auxiliaryEngineQuantity,
                         GeneratorQuantity = generatorQuantity,
@@ -91,7 +105,17 @@ namespace ShipInfo.DOMAIN
                         GeneratorId = generatorId,
                         ShipBuilderId = shipBuilderId,
                         OperatorId = operatorId,
-                        OwnerId = ownerId
+                        OwnerId = ownerId,
+                        BetweenPerpendicularsLength = BetweenPerpendicularsLength,
+                        OverAllLength = OverAllLength,
+                        Breadth = Breadth,
+                        Depth = Depth,
+                        SummerDraught = SummerDraught,
+                        SummerFreeBoard = SummerFreeBoard,
+                        Lightship = Lightship,
+                        VolumeDisplacement = VolumeDisplacement,
+                        Displacement = Displacement
+
                     };
 
                     _context.Ships.Add(ship);

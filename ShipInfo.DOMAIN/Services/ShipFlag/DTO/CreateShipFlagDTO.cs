@@ -13,5 +13,6 @@ namespace ShipInfo.DOMAIN
                 ShipFlagName = shipFlag.ShipFlagName
             };
         }
+
     }
 }

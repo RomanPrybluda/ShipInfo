@@ -2,6 +2,7 @@
 {
     public class Ship
     {
+
         public Guid Id { get; set; }
 
         public int ImoNumber { get; set; }
@@ -33,6 +34,24 @@
         public double NetTonnage { get; set; }
 
         public double SummerDeadweight { get; set; }
+
+        public double OverAllLength { get; set; }
+
+        public double BetweenPerpendicularsLength { get; set; }
+
+        public double Breadth { get; set; }
+
+        public double Depth { get; set; }
+
+        public double SummerDraught { get; set; }
+
+        public double SummerFreeBoard { get; set; }
+
+        public double Lightship { get; set; }
+
+        public double Displacement { get; set; }
+
+        public double VolumeDisplacement { get; set; }
 
         public Guid ShipPowerPlantTypeId { get; set; }
 
@@ -71,10 +90,6 @@
         public Guid OperatorId { get; set; }
 
         public Operator? Operator { get; set; }
-
-        public Guid ShipHullId { get; set; }
-
-        public ShipHull? ShipHull { get; set; }
 
     }
 }

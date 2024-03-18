@@ -4,7 +4,6 @@ namespace ShipInfo.DOMAIN
 {
     public class CreateShipDTO
     {
-        public Guid Id { get; set; }
 
         public int ImoNumber { get; set; }
 
@@ -18,20 +17,19 @@ namespace ShipInfo.DOMAIN
 
         public double GrossTonnage { get; set; }
 
-        public double SummerDeadweight { get; set; }
+        public Guid ShipFlagId { get; set; }
 
-        public static async Task<Ship> ToShipAsync(CreateShipDTO ship)
+        public static Ship CreateShipDTOToShip(CreateShipDTO ship)
         {
             return new Ship
             {
-                Id = ship.Id,
                 ImoNumber = ship.ImoNumber,
                 ShipName = ship.ShipName,
                 DateOfBuild = ship.DateOfBuild,
                 GrossTonnage = ship.GrossTonnage,
-                SummerDeadweight = ship.SummerDeadweight,
                 ShipTypeId = ship.ShipTypeId,
-                StatusId = ship.StatusId
+                StatusId = ship.StatusId,
+                ShipFlagId = ship.ShipFlagId
             };
         }
 

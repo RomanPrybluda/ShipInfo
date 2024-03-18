@@ -2,7 +2,6 @@
 
 namespace ShipInfo.DOMAIN
 {
-
     public class CreateShipBuilderDTO
     {
         public string? ShipBuilderName { get; set; }

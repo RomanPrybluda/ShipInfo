@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("ship")]
+    [Route("ships")]
 
     public class ShipController : ControllerBase
     {
@@ -18,36 +18,36 @@ namespace ShipInfo.WebAPI
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllShips()
+        public async Task<ActionResult> GetAllShipsAsyncAsync()
         {
             var ships = await _shipService.GetShipsListAsync();
             return Ok(ships);
         }
 
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult> GetShipById([Required] Guid id)
+        public async Task<ActionResult> GetShipByIdAsyncAsync([Required] Guid id)
         {
             var ship = await _shipService.GetShipByIdAsync(id);
             return Ok(ship);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateShip([FromBody] CreateShipDTO request)
+        public async Task<ActionResult> CreateShipAsyncAsync([Required][FromBody] CreateShipDTO request)
         {
             var ship = await _shipService.CreateShipAsync(request);
             return Ok(ship);
         }
 
         [HttpPut("{id:Guid}")]
-        public async Task<ActionResult> UpdateShip([FromBody] ShipByIdDTO request)
+        public async Task<ActionResult> UpdateShipAsyncAsync([Required] Guid id, [FromBody] UpdateShipDTO request)
         {
-            var ship = await _shipService.UpdateShipAsync(request);
+            var ship = await _shipService.UpdateShipAsync(id, request);
             return Ok(ship);
         }
 
         [HttpDelete]
         [Route("{id:Guid}")]
-        public async Task<ActionResult> DeleteShip([Required] Guid id)
+        public async Task<ActionResult> DeleteShipAsync([Required] Guid id)
         {
             await _shipService.DeleteShipAsync(id);
             return NoContent();

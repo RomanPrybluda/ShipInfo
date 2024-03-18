@@ -14,7 +14,7 @@ namespace ShipInfo.DOMAIN
 
         public Guid MainEngineManufacturerId { get; set; }
 
-        public static async Task<MainEngineDTO> ToMainEngineDTOAsync(MainEngine mainEngine)
+        public static MainEngineDTO ToMainEngineDTOAsync(MainEngine mainEngine)
         {
             return new MainEngineDTO
             {

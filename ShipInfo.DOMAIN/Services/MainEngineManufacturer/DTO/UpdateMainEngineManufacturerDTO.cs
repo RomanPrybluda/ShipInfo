@@ -6,7 +6,9 @@ namespace ShipInfo.DOMAIN
     {
         public string? MainEngineManufacturerName { get; set; }
 
-        public void UpdateMainEngineManufacturer(MainEngineManufacturer mainEngineManufacturer, UpdateMainEngineManufacturerDTO updateMainEngineManufacturerDTO)
+        public void UpdateMainEngineManufacturer(
+            MainEngineManufacturer mainEngineManufacturer,
+            UpdateMainEngineManufacturerDTO updateMainEngineManufacturerDTO)
         {
             mainEngineManufacturer.MainEngineManufacturerName = updateMainEngineManufacturerDTO.MainEngineManufacturerName;
         }

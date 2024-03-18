@@ -5,6 +5,7 @@ namespace ShipInfo.DAL
 {
     public class ShipConfiguration : IEntityTypeConfiguration<Ship>
     {
+
         public void Configure(EntityTypeBuilder<Ship> builder)
         {
             builder
@@ -16,11 +17,6 @@ namespace ShipInfo.DAL
                 .ValueGeneratedOnAdd();
 
             builder
-                .HasOne(e => e.ShipHull)
-                .WithOne(ed => ed.Ship)
-                .HasForeignKey<Ship>(ed => ed.ShipHullId);
-
-            builder
                 .Property(s => s.ShipName)
                 .IsRequired()
                 .HasMaxLength(30);
@@ -29,16 +25,7 @@ namespace ShipInfo.DAL
                 .Property(s => s.ImoNumber)
                 .IsRequired()
                 .HasPrecision(7);
-
-            builder.Property(s => s.DateOfBuild)
-               .IsRequired();
-
-            builder.Property(s => s.GrossTonnage)
-               .IsRequired();
-
-            builder.Property(s => s.SummerDeadweight)
-               .IsRequired();
-
         }
+
     }
 }

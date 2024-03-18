@@ -31,6 +31,7 @@ namespace ShipInfo.DAL
             builder
                 .Property(me => me.MaxMainEngineSpeed)
                 .IsRequired();
+            ;
 
         }
     }

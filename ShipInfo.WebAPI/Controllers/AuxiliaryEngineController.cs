@@ -6,7 +6,7 @@ namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("auxiliary-engine")]
+    [Route("auxiliary-engines")]
 
     public class AuxiliaryEngineController : ControllerBase
     {
@@ -18,35 +18,35 @@ namespace ShipInfo.WebAPI
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllAuxiliaryEngines()
+        public async Task<ActionResult> GetAllAuxiliaryEnginesAsync()
         {
             var auxiliaryEngines = await _auxiliaryEngineService.GetAuxiliaryEnginesListAsync();
             return Ok(auxiliaryEngines);
         }
 
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult> GetAuxiliaryEngineById([Required] Guid id)
+        public async Task<ActionResult> GetAuxiliaryEngineByIdAsync([Required] Guid id)
         {
             var auxiliaryEngine = await _auxiliaryEngineService.GetAuxiliaryEngineByIdAsync(id);
             return Ok(auxiliaryEngine);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAuxiliaryEngine([FromBody][Required] CreateAuxiliaryEngineDTO request)
+        public async Task<ActionResult> CreateAuxiliaryEngineAsync([FromBody][Required] CreateAuxiliaryEngineDTO request)
         {
             var auxiliaryEngine = await _auxiliaryEngineService.CreateAuxiliaryEngineAsync(request);
             return Ok(auxiliaryEngine);
         }
 
         [HttpPut("{id:Guid}")]
-        public async Task<ActionResult> UpdateAuxiliaryEngine(Guid id, [FromBody][Required] UpdateAuxiliaryEngineDTO request)
+        public async Task<ActionResult> UpdateAuxiliaryEngineAsync(Guid id, [FromBody][Required] UpdateAuxiliaryEngineDTO request)
         {
             var auxiliaryEngine = await _auxiliaryEngineService.UpdateAuxiliaryEngineAsync(id, request);
             return Ok(auxiliaryEngine);
         }
 
         [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult> DeleteAuxiliaryEngine([Required] Guid id)
+        public async Task<ActionResult> DeleteAuxiliaryEngineAsync([Required] Guid id)
         {
             await _auxiliaryEngineService.DeleteAuxiliaryEngineAsync(id);
             return NoContent();

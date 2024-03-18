@@ -26,13 +26,11 @@ namespace ShipInfo.DAL
 
             builder
                  .Property(maep => maep.MaxAuxiliaryEnginePower)
-                 .IsRequired()
-                 .HasMaxLength(30);
+                 .IsRequired();
 
             builder
                  .Property(maes => maes.MaxAuxiliaryEngineSpeed)
-                 .IsRequired()
-                 .HasMaxLength(30);
+                 .IsRequired();
 
         }
     }

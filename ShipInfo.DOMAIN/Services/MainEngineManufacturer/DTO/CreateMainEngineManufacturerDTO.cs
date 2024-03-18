@@ -6,7 +6,8 @@ namespace ShipInfo.DOMAIN
     {
         public string? MainEngineManufacturerName { get; set; }
 
-        public static async Task<MainEngineManufacturer> ToMainEngineManufacturerAsync(CreateMainEngineManufacturerDTO createMainEngineManufacturerDTO)
+        public static async Task<MainEngineManufacturer> ToMainEngineManufacturerAsync(
+            CreateMainEngineManufacturerDTO createMainEngineManufacturerDTO)
         {
             return new MainEngineManufacturer
             {

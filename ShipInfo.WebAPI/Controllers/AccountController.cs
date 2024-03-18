@@ -7,7 +7,7 @@ namespace ShipInfo.WebAPI
     [ApiController]
     [Produces("application/json")]
     //[Authorize]
-    [Route("account")]
+    [Route("accounts")]
 
     public class AccountController : ControllerBase
     {
@@ -20,8 +20,8 @@ namespace ShipInfo.WebAPI
         }
 
         [HttpPost("user-registration")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserRegisterRequest userReg)
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RegisterUserAsync([FromBody] UserRegisterRequest userReg)
         {
             var result = await _accountService.RegisterUser(userReg);
 
@@ -30,7 +30,7 @@ namespace ShipInfo.WebAPI
 
         [HttpPost("user-login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] UserLogginRequest userLog)
+        public async Task<IActionResult> LoginAsync([FromBody] UserLogginRequest userLog)
         {
             var response = await _accountService.Login(userLog);
 

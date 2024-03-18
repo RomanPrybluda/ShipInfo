@@ -102,9 +102,6 @@ using (var scope = app.Services.CreateScope())
     var operatorInitializer = new OperatorInitializer(context);
     operatorInitializer.InitializeOperators();
 
-    var shipHullInitializer = new ShipHullInitializer(context);
-    shipHullInitializer.InitializeShipHulls();
-
     var shipInitializer = new ShipInitializer(context);
     shipInitializer.InitializeShips();
 

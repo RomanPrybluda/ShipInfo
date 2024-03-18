@@ -151,8 +151,12 @@ namespace ShipInfo.DOMAIN
             DateTime start = new DateTime(1996, 5, 3);
             DateTime end = new DateTime(2020, 6, 8);
 
-            int range = (end - start).Days;
-            return start.AddDays(_random.Next(range));
+            TimeSpan range = end - start;
+            int totalDays = range.Days;
+
+            int randomDays = _random.Next(totalDays);
+
+            return start.AddDays(randomDays);
         }
 
         public string GenerateRandomCallSign(int callSingLenth)
@@ -160,25 +164,6 @@ namespace ShipInfo.DOMAIN
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
             return new string(Enumerable.Repeat(chars, callSingLenth)
                 .Select(s => s[_random.Next(s.Length)]).ToArray());
-        }
-
-        public ShipHull GetShipHull()
-        {
-            var usedShipHullIds = _context.Ships.Select(ship => ship.ShipHullId).ToList();
-
-            var availableShipHulls = _context.ShipHulls
-                .Where(shipHull => !usedShipHullIds.Contains(shipHull.Id))
-                .ToList();
-
-            if (availableShipHulls.Any())
-            {
-                int randomIndex = _random.Next(availableShipHulls.Count);
-                return availableShipHulls[randomIndex];
-            }
-            else
-            {
-                throw new InvalidOperationException("There are no available ShipHulls.");
-            }
         }
 
         public T GetRandomEntity<T>(IEnumerable<T> entities)
