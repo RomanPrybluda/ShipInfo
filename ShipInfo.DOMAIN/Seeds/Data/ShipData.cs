@@ -91,7 +91,7 @@ namespace ShipInfo.DOMAIN
 
             while (uniqueImoNumbers.Count < needsShipsQuantity)
             {
-                int[] digits = new int[6];
+                int[] digits = new int[7];
                 digits[0] = _random.Next(7, 10);
 
                 for (int j = 1; j < 6; j++)
@@ -101,7 +101,11 @@ namespace ShipInfo.DOMAIN
                 for (int i = 0; i < 6; i++)
                     checksum += digits[i] * (7 - i);
 
-                digits[5] = checksum % 10;
+                checksum %= 10;
+                digits[5] = checksum;
+
+                digits[6] = (10 - (checksum % 10)) % 10;
+
                 int imoNumber = int.Parse(string.Join("", digits));
 
                 uniqueImoNumbers.Add(imoNumber);
@@ -109,6 +113,7 @@ namespace ShipInfo.DOMAIN
 
             return uniqueImoNumbers.ToArray();
         }
+
 
         public string GetShipName(string[] ShipNames)
         {

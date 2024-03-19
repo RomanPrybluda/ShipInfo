@@ -76,9 +76,9 @@ namespace ShipInfo.DOMAIN
 
         public async Task<ShipByIdDTO> UpdateShipAsync(Guid id, UpdateShipDTO request)
         {
-            var existingShip = await _context.Ships.FirstOrDefaultAsync(ship => ship.Id == id);
+            var ship = await _context.Ships.FindAsync(id);
 
-            if (existingShip == null)
+            if (ship == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No shipById with ID {id}.");
 
             if (await _context.Ships.FirstOrDefaultAsync(x => x.ImoNumber == request.ImoNumber) != null)
@@ -94,9 +94,11 @@ namespace ShipInfo.DOMAIN
             if (status == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No Status found with ID {request.StatusId}");
 
+            request.UpdateShip(ship, request);
+
             await _context.SaveChangesAsync();
 
-            var updatedShipDTO = ShipByIdDTO.ToShipByIdDTOAsync(existingShip, _context);
+            var updatedShipDTO = ShipByIdDTO.ToShipByIdDTOAsync(ship, _context);
 
             return updatedShipDTO;
         }

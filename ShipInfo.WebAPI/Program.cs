@@ -48,6 +48,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         b => b.MigrationsAssembly("ShipInfo.DAL"));
 });
 
+
+builder.Logging.AddConsole();
+
+
 var app = builder.Build();
 
 

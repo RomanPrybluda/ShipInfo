@@ -30,13 +30,13 @@ namespace ShipInfo.WebAPI
             catch (Exception ex)
             {
                 if (ex is CustomException exception)
-                    await LogCityWeatherException(context, exception);
+                    await LogShipInfoException(context, exception);
                 else
                     await LogUnhandledException(context, ex);
             }
         }
 
-        private async Task LogCityWeatherException(HttpContext context, CustomException ex)
+        private async Task LogShipInfoException(HttpContext context, CustomException ex)
         {
             _logger.LogError($"{DateTime.UtcNow.ToString("MM-dd-yyyy HH:mm:ss")} {ex.ExceptionType}  {ex.Message} {ex.StackTrace}");
 

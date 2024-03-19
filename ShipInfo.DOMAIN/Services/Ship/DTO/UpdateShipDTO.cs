@@ -1,4 +1,6 @@
-﻿namespace ShipInfo.DOMAIN
+﻿using ShipInfo.DAL;
+
+namespace ShipInfo.DOMAIN
 {
     public class UpdateShipDTO
     {
@@ -20,7 +22,7 @@
 
         public Guid ShipFlagId { get; set; }
 
-        public Guid CallSign { get; set; }
+        public string? CallSign { get; set; }
 
         public Guid ClassSocietyId { get; set; }
 
@@ -63,6 +65,42 @@
         public double Displacement { get; set; }
 
         public double VolumeDisplacement { get; set; }
+
+        public void UpdateShip(Ship ship, UpdateShipDTO updateShipDTO)
+        {
+            ship.ImoNumber = updateShipDTO.ImoNumber;
+            ship.ShipName = updateShipDTO.ShipName;
+            ship.DateOfBuild = updateShipDTO.DateOfBuild;
+            ship.GrossTonnage = updateShipDTO.GrossTonnage;
+            ship.CallSign = updateShipDTO.CallSign;
+            ship.ShipTypeId = updateShipDTO.ShipTypeId;
+            ship.StatusId = updateShipDTO.StatusId;
+            ship.ShipFlagId = updateShipDTO.ShipFlagId;
+            ship.ClassSocietyId = updateShipDTO.ClassSocietyId;
+            ship.ShipPowerPlantTypeId = updateShipDTO.ShipPowerPlantTypeId;
+            ship.ShipPropulsorTypeId = updateShipDTO.ShipPropulsorTypeId;
+            ship.MainEngineId = updateShipDTO.MainEngineId;
+            ship.AuxiliaryEngineId = updateShipDTO.AuxiliaryEngineId;
+            ship.GeneratorId = updateShipDTO.GeneratorId;
+            ship.ShipBuilderId = updateShipDTO.ShipBuilderId;
+            ship.OwnerId = updateShipDTO.OwnerId;
+            ship.OperatorId = updateShipDTO.OperatorId;
+            ship.SummerDeadweight = updateShipDTO.SummerDeadweight;
+            ship.NetTonnage = updateShipDTO.NetTonnage;
+            ship.OverAllLength = updateShipDTO.OverAllLength;
+            ship.BetweenPerpendicularsLength = updateShipDTO.BetweenPerpendicularsLength;
+            ship.Breadth = updateShipDTO.Breadth;
+            ship.Depth = updateShipDTO.Depth;
+            ship.SummerDraught = updateShipDTO.SummerDraught;
+            ship.SummerFreeBoard = updateShipDTO.SummerFreeBoard;
+            ship.Lightship = updateShipDTO.Lightship;
+            ship.Displacement = updateShipDTO.Displacement;
+            ship.VolumeDisplacement = updateShipDTO.VolumeDisplacement;
+            ship.GeneratorQuantity = updateShipDTO.GeneratorQuantity;
+            ship.AuxiliaryEngineQuantity = updateShipDTO.AuxiliaryEngineQuantity;
+            ship.MainEngineQuantity = updateShipDTO.MainEngineQuantity;
+
+        }
 
     }
 }
