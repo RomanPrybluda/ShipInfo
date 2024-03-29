@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using ShipInfo.DAL;
 
-namespace Domain.Seeds
+namespace ShipInfo.DOMAIN
 {
     public class AdminInitializer
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShipInfo.DAL;
 
-namespace Domain.Seeds
+namespace ShipInfo.DOMAIN
 {
     public class RoleInitializer
     {

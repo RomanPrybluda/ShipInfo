@@ -1,4 +1,3 @@
-using Domain.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShipInfo.DAL;
@@ -21,6 +20,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<RoleService>();
+
 builder.Services.AddScoped<AuxiliaryEngineService>();
 builder.Services.AddScoped<AuxiliaryEngineManufacturerService>();
 builder.Services.AddScoped<ClassSocietyService>();
@@ -112,8 +113,9 @@ using (var scope = app.Services.CreateScope())
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     await RoleInitializer.InitializeRole(roleManager);
 
-    //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-    //await AdminInitializer.InitializeRole(userManager, configuration);
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    var configuration = builder.Configuration;
+    await AdminInitializer.InitializeRole(userManager, configuration);
 
 }
 

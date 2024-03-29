@@ -1,26 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShipInfo.DAL;
 
-namespace ShipInfo.DOMAIN.Seeds
+namespace ShipInfo.DOMAIN
 {
-    public class DataForShip
+    public class ShipDataCreator
     {
         private readonly AppDbContext _context;
         private static readonly Random _random = new Random();
 
-        readonly int callSingLenth = 5;
-        readonly int separateMainEnginePower = 1000;
-        int mainEngineQuantity;
-        readonly int mainEngineQuantityOne = 1;
-        readonly int mainEngineQuantityTwo = 2;
-        readonly int auxiliaryEngineQuantity = 3;
-        readonly int generatorQuantity = 3;
-        readonly double kGrossTonnage = 3.024076387;
-        readonly double kNetTonnage = 0.916476439;
-        readonly string powerPlantTypeName = "Diesel Engine";
-        readonly string powerPropulsorTypeName = "Fixed Pitch Propeller";
-
-        public DataForShip(AppDbContext context)
+        public ShipDataCreator(AppDbContext context)
         {
             _context = context;
         }
@@ -144,38 +132,5 @@ namespace ShipInfo.DOMAIN.Seeds
             return Guid.Empty;
         }
 
-
-
-        private readonly string[] ShipNames = new string[]
-{
-            "Ocean Voyager", "Sea Explorer", "Marine Spirit", "Wave Rider",
-            "Aqua Star", "Nautical Dream", "Blue Horizon", "Coastal Princess",
-            "Island Navigator", "Harbor Master", "Sailor's Delight", "Tidal Quest",
-            "Seafarer's Joy", "Coral Queen", "Voyage Vessel", "Majestic Mariner",
-            "Seaside Serenity", "Aquatic Adventure", "Maritime Majesty", "Shipshape Splendor",
-            "Oceanic Odyssey", "Seabreeze Bliss", "Seascape Symphony", "Marina Magic",
-            "Bluewater Beauty", "Triton's Triumph", "Anchor's Away", "Seashell Serenade",
-            "Sailaway Splendor", "Captain's Charm", "Nautical Nomad", "Maritime Marvel",
-            "Salty Seafoam", "Seafaring Symphony", "Cruise King", "Ocean Pearl",
-            "Tidal Treasure", "Mariner's Melody", "Seafarer's Solace", "Wavecrest Wonder",
-            "Aquamarine Adventure", "Maritime Miracle", "Seaspray Splendor", "Sailor's Sanctuary",
-            "Seabound Serenity", "Ocean Odyssey", "Voyage Voyager", "Coastal Cruiser",
-            "Sailor's Sunrise"
-};
-
-        private readonly string[] ShipTypes = new string[]
-        {
-            "Bulk Carrier",
-            "Combination Carrier",
-            "Container Ship",
-            "General Cargo Ship",
-            "Refrigerated Cargo Carrier"
-        };
-
-        private readonly string[] ShipStatuses = new string[]
-        {
-            "In Casualty Or Repairing",
-            "In Service/Commission"
-        };
     }
 }
