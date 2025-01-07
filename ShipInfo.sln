@@ -4,12 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShipInfo.DAL", "ShipInfo.DAL\ShipInfo.DAL.csproj", "{A9986BC0-6233-497A-AC9E-1C30603E4EF7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8C0E120A-8694-4EAD-9DDC-2CF6CCD2FF8B} = {8C0E120A-8694-4EAD-9DDC-2CF6CCD2FF8B}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShipInfo.Domain", "ShipInfo.DOMAIN\ShipInfo.Domain.csproj", "{8C0E120A-8694-4EAD-9DDC-2CF6CCD2FF8B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShipInfo.WebAPI", "ShipInfo.WebAPI\ShipInfo.WebAPI.csproj", "{9CBD12CA-D940-4DD1-9952-252D666CCF4A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8C0E120A-8694-4EAD-9DDC-2CF6CCD2FF8B} = {8C0E120A-8694-4EAD-9DDC-2CF6CCD2FF8B}
+		{A9986BC0-6233-497A-AC9E-1C30603E4EF7} = {A9986BC0-6233-497A-AC9E-1C30603E4EF7}
 	EndProjectSection
 EndProject
 Global

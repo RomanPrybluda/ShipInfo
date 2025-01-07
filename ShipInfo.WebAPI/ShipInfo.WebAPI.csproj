@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ShipInfo.DAL\ShipInfo.DAL.csproj" />
     <ProjectReference Include="..\ShipInfo.Domain\ShipInfo.Domain.csproj" />
   </ItemGroup>
 

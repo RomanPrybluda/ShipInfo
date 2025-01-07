@@ -1,5 +1,5 @@
 ﻿
-namespace ShipInfo.DOMAIN
+namespace ShipInfo.Domain
 {
     public enum CustomExceptionType
     {

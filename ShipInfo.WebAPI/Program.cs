@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShipInfo.DAL;
-using ShipInfo.DOMAIN;
+using ShipInfo.DAL.Repositories;
+using ShipInfo.Domain;
+using ShipInfo.Domain.Abstractions;
 using ShipInfo.WebAPI;
 using System.Text.Json.Serialization;
 
@@ -20,46 +21,25 @@ builder.Services.AddHttpClient();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<AccountService>();
-builder.Services.AddScoped<RoleService>();
-
-builder.Services.AddScoped<AuxiliaryEngineService>();
-builder.Services.AddScoped<AuxiliaryEngineManufacturerService>();
-builder.Services.AddScoped<ClassSocietyService>();
-builder.Services.AddScoped<GeneratorService>();
-builder.Services.AddScoped<GeneratorManufacturerService>();
 builder.Services.AddScoped<JWTService>();
-builder.Services.AddScoped<MainEngineService>();
-builder.Services.AddScoped<MainEngineManufacturerService>();
-builder.Services.AddScoped<OperatorService>();
-builder.Services.AddScoped<OwnerService>();
 builder.Services.AddScoped<ShipService>();
-builder.Services.AddScoped<ShipBuilderService>();
-builder.Services.AddScoped<ShipFlagService>();
-builder.Services.AddScoped<ShipPowerPlantTypeService>();
-builder.Services.AddScoped<ShipPropulsorTypeService>();
-builder.Services.AddScoped<ShipTypeService>();
-builder.Services.AddScoped<StatusService>();
 
+builder.Services.AddScoped<IShipRepository, ShipRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddIdentityCore<AppUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
-
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<ShipInfoDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"),
         b => b.MigrationsAssembly("ShipInfo.DAL"));
 });
 
-
 builder.Logging.AddConsole();
-
 
 var app = builder.Build();
 
-
-
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var context = scope.ServiceProvider.GetRequiredService<ShipInfoDbContext>();
     context.Database.Migrate();
 
     var shipTypeInitializer = new ShipTypeInitializer(context);
@@ -110,12 +90,12 @@ using (var scope = app.Services.CreateScope())
     var shipInitializer = new ShipInitializer(context);
     shipInitializer.InitializeShips();
 
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    await RoleInitializer.InitializeRole(roleManager);
+    //var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    //await RoleInitializer.InitializeRole(roleManager);
 
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-    var configuration = builder.Configuration;
-    await AdminInitializer.InitializeRole(userManager, configuration);
+    //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    //var configuration = builder.Configuration;
+    //await AdminInitializer.InitializeRole(userManager, configuration);
 
 }
 

@@ -11,7 +11,7 @@ using ShipInfo.DAL;
 
 namespace ShipInfo.DAL.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(ShipInfoDbContext))]
     [Migration("20240318173025_init")]
     partial class init
     {
@@ -662,7 +662,7 @@ namespace ShipInfo.DAL.Migrations
                     b.ToTable("ShipTypes");
                 });
 
-            modelBuilder.Entity("ShipInfo.DAL.Status", b =>
+            modelBuilder.Entity("ShipInfo.DAL.ShipStatus", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -831,7 +831,7 @@ namespace ShipInfo.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShipInfo.DAL.Status", "Status")
+                    b.HasOne("ShipInfo.DAL.ShipStatus", "ShipStatus")
                         .WithMany("Ships")
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -859,7 +859,7 @@ namespace ShipInfo.DAL.Migrations
 
                     b.Navigation("ShipType");
 
-                    b.Navigation("Status");
+                    b.Navigation("ShipStatus");
                 });
 
             modelBuilder.Entity("ShipInfo.DAL.AuxiliaryEngine", b =>
@@ -932,7 +932,7 @@ namespace ShipInfo.DAL.Migrations
                     b.Navigation("Ships");
                 });
 
-            modelBuilder.Entity("ShipInfo.DAL.Status", b =>
+            modelBuilder.Entity("ShipInfo.DAL.ShipStatus", b =>
                 {
                     b.Navigation("Ships");
                 });

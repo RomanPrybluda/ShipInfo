@@ -1,4 +1,4 @@
-﻿using ShipInfo.DOMAIN;
+﻿using ShipInfo.Domain;
 
 namespace ShipInfo.WebAPI
 {

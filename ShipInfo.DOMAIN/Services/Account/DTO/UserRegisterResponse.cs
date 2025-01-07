@@ -1,4 +1,4 @@
-﻿namespace ShipInfo.DOMAIN
+﻿namespace ShipInfo.Domain
 {
     public class UserRegisterResponse
     {

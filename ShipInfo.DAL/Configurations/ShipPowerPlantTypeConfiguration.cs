@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ShipInfo.Domain.Entities;
 
-namespace ShipInfo.DAL.Configurations
+namespace ShipInfo.DAL
 {
     public class ShipPowerPlantTypeConfiguration : IEntityTypeConfiguration<ShipPowerPlantType>
     {

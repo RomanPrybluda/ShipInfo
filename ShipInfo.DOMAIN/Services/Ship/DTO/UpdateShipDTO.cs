@@ -1,6 +1,6 @@
 ﻿using ShipInfo.DAL;
 
-namespace ShipInfo.DOMAIN
+namespace ShipInfo.Domain
 {
     public class UpdateShipDTO
     {

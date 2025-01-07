@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ShipInfo.DOMAIN
+namespace ShipInfo.Domain
 {
     public static class HttpClientHelper
     {

@@ -1,6 +1,6 @@
-﻿using ShipInfo.DAL;
+﻿using ShipInfo.Domain.Entities;
 
-namespace ShipInfo.DOMAIN
+namespace ShipInfo.Domain
 {
     public class CreateShipDTO
     {

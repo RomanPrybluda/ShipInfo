@@ -1,18 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
-using ShipInfo.DAL;
+﻿using ShipInfo.Domain.Abstractions;
+using ShipInfo.Domain.Entities;
 
-
-namespace ShipInfo.DOMAIN
+namespace ShipInfo.Domain
 {
     public class AccountService
     {
 
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IUserRepository _userRepository;
         private readonly JWTService _jwtService;
 
-        public AccountService(UserManager<AppUser> userManager, JWTService jwtService)
+        public AccountService(IUserRepository userRepository, JWTService jwtService)
         {
-            _userManager = userManager;
+            _userRepository = userRepository;
             _jwtService = jwtService;
         }
 
@@ -20,7 +19,7 @@ namespace ShipInfo.DOMAIN
         {
             var email = model.Email.ToLower();
 
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userRepository.FindByEmailAsync(email);
 
             if (user != null)
                 throw new ArgumentException("User is already exists.");
@@ -32,7 +31,7 @@ namespace ShipInfo.DOMAIN
                 EmailConfirmed = true,
             };
 
-            var userNew = await _userManager.CreateAsync(newUser, model.Password);
+            var userNew = await _userRepository.CreateAsync(newUser, model.Password);
 
             if (!userNew.Succeeded)
             {
@@ -45,7 +44,7 @@ namespace ShipInfo.DOMAIN
                 Email = newUser.Email
             };
 
-            userNew = await _userManager.AddToRoleAsync(newUser, Roles.ADMIN);
+            userNew = await _userRepository.AddToRoleAsync(newUser, Roles.ADMIN);
 
 
             if (!userNew.Succeeded)
