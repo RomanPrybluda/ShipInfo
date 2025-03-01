@@ -14,32 +14,105 @@ namespace ShipInfo.DOMAIN
 
         public async Task<IEnumerable<ShipDTO>> GetShipsListAsync()
         {
-            var ships = await _context.Ships.ToListAsync();
+            var ships = await _context.Ships
+                .AsNoTracking()
+                .Select(ship => new ShipDTO
+                {
+                    Id = ship.Id,
+                    ImoNumber = ship.ImoNumber,
+                    ShipName = ship.ShipName,
+                    ShipTypeName = _context.ShipTypes.FirstOrDefault(st => st.Id == ship.ShipTypeId) != null
+                                    ? _context.ShipTypes.FirstOrDefault(st => st.Id == ship.ShipTypeId).ShipTypeName
+                                    : null,
+                    DateOfBuild = ship.DateOfBuild,
+                    StatusName = _context.Statuses.FirstOrDefault(st => st.Id == ship.StatusId) != null
+                                    ? _context.Statuses.FirstOrDefault(st => st.Id == ship.StatusId).StatusName
+                                    : null,
+                    GrossTonnage = ship.GrossTonnage,
+                    SummerDeadweight = ship.SummerDeadweight,
+                    ShipFlagName = _context.ShipFlags.FirstOrDefault(sf => sf.Id == ship.ShipFlagId) != null
+                                    ? _context.ShipFlags.FirstOrDefault(sf => sf.Id == ship.ShipFlagId).ShipFlagName
+                                    : null,
+                })
+                .ToListAsync();
 
             if (ships == null)
                 throw new CustomException(CustomExceptionType.NotFound, "No ships");
 
-            var shipDTOs = new List<ShipDTO>();
-
-            foreach (var ship in ships)
-            {
-                var shipDTO = ShipDTO.ShipToShipDTO(ship, _context);
-                shipDTOs.Add(shipDTO);
-            }
-
-            return shipDTOs;
+            return ships;
         }
 
         public async Task<ShipByIdDTO> GetShipByIdAsync(Guid id)
         {
-            var shipById = await _context.Ships.FindAsync(id);
+            var shipById = await _context.Ships
+                .AsNoTracking()
+                .Where(s => s.Id == id)
+                .Select(ship => new ShipByIdDTO
+                {
+                    Id = ship.Id,
+                    ImoNumber = ship.ImoNumber,
+                    ShipName = ship.ShipName,
+                    ShipTypeName = _context.ShipTypes.FirstOrDefault(st => st.Id == ship.ShipTypeId) != null
+                                    ? _context.ShipTypes.FirstOrDefault(st => st.Id == ship.ShipTypeId).ShipTypeName
+                                    : null,
+                    DateOfBuild = ship.DateOfBuild,
+                    StatusName = _context.Statuses.FirstOrDefault(st => st.Id == ship.StatusId) != null
+                                    ? _context.Statuses.FirstOrDefault(st => st.Id == ship.StatusId).StatusName
+                                    : null,
+                    GrossTonnage = ship.GrossTonnage,
+                    SummerDeadweight = ship.SummerDeadweight,
+                    ShipFlagName = _context.ShipFlags.FirstOrDefault(sf => sf.Id == ship.ShipFlagId) != null
+                                    ? _context.ShipFlags.FirstOrDefault(sf => sf.Id == ship.ShipFlagId).ShipFlagName
+                                    : null,
+                    NetTonnage = ship.NetTonnage,
+                    CallSign = ship.CallSign,
+                    ClassSociety = _context.ClassSocieties.FirstOrDefault(cs => cs.Id == ship.ClassSocietyId) != null
+                                    ? _context.ClassSocieties.FirstOrDefault(cs => cs.Id == ship.ClassSocietyId).ClassSocietyName
+                                    : null,
+                    ShipPowerPlantType = _context.ShipPowerPlantTypes.FirstOrDefault(sp => sp.Id == ship.ShipPowerPlantTypeId) != null
+                                    ? _context.ShipPowerPlantTypes.FirstOrDefault(sp => sp.Id == ship.ShipPowerPlantTypeId).ShipPowerPlantTypeName
+                                    : null,
+                    ShipPropulsorType = _context.ShipPropulsorTypes.FirstOrDefault(sp => sp.Id == ship.ShipPropulsorTypeId) != null
+                                    ? _context.ShipPropulsorTypes.FirstOrDefault(sp => sp.Id == ship.ShipPropulsorTypeId).ShipPropulsorTypeName
+                                    : null,
+                    MainEngineQuantity = ship.MainEngineQuantity,
+                    MainEngine = _context.MainEngines.FirstOrDefault(me => me.Id == ship.MainEngineId) != null
+                                    ? _context.MainEngines.FirstOrDefault(me => me.Id == ship.MainEngineId).MainEngineType
+                                    : null,
+                    AuxiliaryEngineQuantity = ship.AuxiliaryEngineQuantity,
+                    AuxiliaryEngine = _context.AuxiliaryEngines.FirstOrDefault(ae => ae.Id == ship.AuxiliaryEngineId) != null
+                                    ? _context.AuxiliaryEngines.FirstOrDefault(ae => ae.Id == ship.AuxiliaryEngineId).AuxiliaryEngineType
+                                    : null,
+                    GeneratorQuantity = ship.GeneratorQuantity,
+                    Generator = _context.Generators.FirstOrDefault(gen => gen.Id == ship.GeneratorId) != null
+                                    ? _context.Generators.FirstOrDefault(gen => gen.Id == ship.GeneratorId).GeneratorType
+                                    : null,
+                    ShipBuilder = _context.ShipBuilders.FirstOrDefault(sb => sb.Id == ship.ShipBuilderId) != null
+                                    ? _context.ShipBuilders.FirstOrDefault(sb => sb.Id == ship.ShipBuilderId).ShipBuilderName
+                                    : null,
+                    Owner = _context.Owners.FirstOrDefault(own => own.Id == ship.OwnerId) != null
+                                    ? _context.Owners.FirstOrDefault(own => own.Id == ship.OwnerId).OwnerName
+                                    : null,
+                    Operator = _context.Operators.FirstOrDefault(op => op.Id == ship.OperatorId) != null
+                                    ? _context.Operators.FirstOrDefault(op => op.Id == ship.OperatorId).OperatorName
+                                    : null,
+                    OverAllLength = ship.OverAllLength,
+                    BetweenPerpendicularsLength = ship.BetweenPerpendicularsLength,
+                    Breadth = ship.Breadth,
+                    Depth = ship.Depth,
+                    SummerDraught = ship.SummerDraught,
+                    SummerFreeBoard = ship.SummerFreeBoard,
+                    Lightship = ship.Lightship,
+                    Displacement = ship.Displacement,
+                    VolumeDisplacement = ship.VolumeDisplacement,
+                })
+                .FirstOrDefaultAsync();
+
 
             if (shipById == null)
                 throw new CustomException(CustomExceptionType.NotFound, $"No shipById with ID {id}");
 
-            var shipByIdDTO = ShipByIdDTO.ToShipByIdDTOAsync(shipById, _context);
-
-            return shipByIdDTO;
+            return shipById;
         }
 
         public async Task<ShipDTO> CreateShipAsync(CreateShipDTO request)

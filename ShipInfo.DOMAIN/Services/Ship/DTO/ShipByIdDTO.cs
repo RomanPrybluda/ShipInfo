@@ -22,7 +22,7 @@ namespace ShipInfo.DOMAIN
 
         public double NetTonnage { get; set; }
 
-        public string? ShipFlag { get; set; }
+        public string? ShipFlagName { get; set; }
 
         public string? CallSign { get; set; }
 
@@ -93,7 +93,7 @@ namespace ShipInfo.DOMAIN
                 GrossTonnage = ship.GrossTonnage,
                 SummerDeadweight = ship.SummerDeadweight,
                 NetTonnage = ship.NetTonnage,
-                ShipFlag = context.ShipFlags
+                ShipFlagName = context.ShipFlags
                                 .FirstOrDefault(sf => sf.Id == ship.ShipFlagId)?.ShipFlagName,
                 CallSign = ship.CallSign,
                 ClassSociety = context.ClassSocieties
