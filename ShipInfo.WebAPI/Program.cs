@@ -119,11 +119,13 @@ using (var scope = app.Services.CreateScope())
 
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+// Swagger will be available also on production hosting
+app.UseSwagger();
+app.UseSwaggerUI();
+//}
 
 app.UseHttpsRedirection();
 
