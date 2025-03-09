@@ -1,6 +1,8 @@
 ### ShipInfo
 The service provides access to information about civil fleet vessels.
 
+Site swagger link [ship-info](http://ship-info.runasp.net/swagger/index.html)
+
 ### User Story
 #### Registered users
 Registered users can search for a vessel by IMO number or vessel name.
