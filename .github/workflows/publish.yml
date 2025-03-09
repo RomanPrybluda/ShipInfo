@@ -23,6 +23,25 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
+      - name: Replace appsettings.json values
+        run: |
+          $filePath = "./appsettings.json"
+          $json = Get-Content $filePath | ConvertFrom-Json
+          
+          $json.ConnectionStrings.Default = "${{ secrets.SHIP_INFO_CONNECTION_STRING }}"
+          
+          $json.JwtSettings.Key = "${{ secrets.SHIP_INFO_JWT_SETTINGS_KEY }}"
+          $json.JwtSettings.Issuer = "${{ secrets.SHIP_INFO_JWT_SETTINGS_ISSUER }}"
+          $json.JwtSettings.Audience = "${{ secrets.SHIP_INFO_JWT_SETTINGS_AUDIENCE }}"
+          $json.JwtSettings.ExpiresHours = "${{ secrets.SHIP_INFO_JWT_SETTINGS_EXPIRES_HOURS }}"
+          
+          $json.AdminSettings.UserName = "${{ secrets.SHIP_INFO_ADMIN_SETTINGS_USERNAME }}"
+          $json.AdminSettings.Email = "${{ secrets.SHIP_INFO_ADMIN_SETTINGS_EMAIL }}"
+          $json.AdminSettings.Password = "${{ secrets.SHIP_INFO_ADMIN_SETTINGS_PASSWORD }}"
+          
+          $json | ConvertTo-Json -Depth 10 | Set-Content $filePath
+        shell: pwsh
+
       - name: Publish
         run: dotnet publish --configuration Release --output ./publish --runtime win-x86 
         
