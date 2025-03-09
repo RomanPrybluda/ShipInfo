@@ -35,11 +35,11 @@ namespace ShipInfo.DOMAIN
             }
 
             var authSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_config["JWTparams:Key"]));
+                Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));
 
             var token = new JwtSecurityToken(
-                _config["JWTparams:Issuer"],
-                _config["JWTparams:Audience"],
+                _config["JwtSettings:Issuer"],
+                _config["JwtSettings:Audience"],
                 expires: DateTime.Now.AddDays(24),
                 claims: claim,
                 signingCredentials: new SigningCredentials(

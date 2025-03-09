@@ -8,6 +8,21 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 
+var connectionString = builder.Configuration.GetConnectionString("Default");
+
+var localConnectionString = builder.Configuration["ConnectionStrings:LocalConnectionString"];
+
+if (!string.IsNullOrWhiteSpace(localConnectionString))
+{
+    connectionString = localConnectionString;
+}
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException("Connection string is not set. Check environment variables, appsettings.json, or secrets.");
+}
+
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -45,8 +60,7 @@ builder.Services.AddIdentityCore<AppUser>().AddRoles<IdentityRole>().AddEntityFr
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"),
-        b => b.MigrationsAssembly("ShipInfo.DAL"));
+    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ShipInfo.DAL"));
 });
 
 
