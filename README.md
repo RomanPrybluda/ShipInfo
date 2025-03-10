@@ -18,5 +18,3 @@ Administrators have the option to:
 ### NOTE
 The project is under development.
 Scope of the project back-end part (Web API).
-At the moment, ShipInfo.DAL is fully developed.
-ShipInfo.DOMAIN and ShipInfo.WebAPI are under development.
