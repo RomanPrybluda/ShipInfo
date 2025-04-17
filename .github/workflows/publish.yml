@@ -49,7 +49,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish --configuration Release --output ./publish --runtime win-x86 
+        run: dotnet publish ./ShipInfo.WebAPI/ShipInfo.WebAPI.csproj --configuration Release --output ./publish --runtime win-x86 
         
       - name: Test with .NET
         run: dotnet test
@@ -61,4 +61,5 @@ jobs:
           server-computer-name: ${{ secrets.SHIP_INFO_SERVER_COMPUTER_NAME }}
           server-username: ${{ secrets.SHIP_INFO_SERVER_USERNAME }}
           server-password: ${{ secrets.SHIP_INFO_SERVER_PASSWORD }}
-          target-path: wwwroot\api
+          source-path: ./publish
+          target-path: site\wwwroot\api
