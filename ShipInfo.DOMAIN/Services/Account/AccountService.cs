@@ -22,8 +22,8 @@ namespace ShipInfo.DOMAIN
 
             var user = await _userManager.FindByEmailAsync(email);
 
-            if (user != null)
-                throw new ArgumentException("User is already exists.");
+            if (user == null!)
+                throw new CustomException(CustomExceptionType.UserIsAlreadyExists, "User is already exists.");
 
             var newUser = new AppUser
             {
@@ -77,6 +77,16 @@ namespace ShipInfo.DOMAIN
                 UserId = user.Id
             };
 
+        }
+
+        private static string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        private static bool VerifyPassword(string hashedPassword, string providedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword);
         }
 
     }

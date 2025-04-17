@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShipInfo.DOMAIN;
 
 namespace ShipInfo.WebAPI
 {
     [ApiController]
     [Produces("application/json")]
-    //[Authorize]
-    [Route("accounts")]
+    [Route("users")]
 
     public class AccountController : ControllerBase
     {
@@ -19,8 +17,7 @@ namespace ShipInfo.WebAPI
             _accountService = accountService;
         }
 
-        [HttpPost("user-registration")]
-        //[Authorize(Roles = "Admin")]
+        [HttpPost("registration")]
         public async Task<IActionResult> RegisterUserAsync([FromBody] UserRegisterRequest userReg)
         {
             var result = await _accountService.RegisterUser(userReg);
@@ -28,8 +25,7 @@ namespace ShipInfo.WebAPI
             return Ok(result);
         }
 
-        [HttpPost("user-login")]
-        [AllowAnonymous]
+        [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] UserLogginRequest userLog)
         {
             var response = await _accountService.Login(userLog);
