@@ -21,23 +21,29 @@ jobs:
         run: dotnet restore  
         
       - name: Replace appsettings.json values
-        run: |
-          $filePath = "./appsettings.json"
-          $json = Get-Content $filePath | ConvertFrom-Json
-          
-          $json.ConnectionStrings.Default = "${{ secrets.SHIP_INFO_CONNECTION_STRING }}"
-          
-          $json.JwtSettings.Key = "${{ secrets.SHIP_INFO_JWT_SETTINGS_KEY }}"
-          $json.JwtSettings.Issuer = "${{ secrets.SHIP_INFO_JWT_SETTINGS_ISSUER }}"
-          $json.JwtSettings.Audience = "${{ secrets.SHIP_INFO_JWT_SETTINGS_AUDIENCE }}"
-          $json.JwtSettings.ExpiresHours = "${{ secrets.SHIP_INFO_JWT_SETTINGS_EXPIRES_HOURS }}"
-          
-          $json.AdminSettings.UserName = "${{ secrets.SHIP_INFO_ADMIN_SETTINGS_USERNAME }}"
-          $json.AdminSettings.Email = "${{ secrets.SHIP_INFO_ADMIN_SETTINGS_EMAIL }}"
-          $json.AdminSettings.Password = "${{ secrets.SHIP_INFO_ADMIN_SETTINGS_PASSWORD }}"
-          
-          $json | ConvertTo-Json -Depth 10 | Set-Content $filePath
         shell: pwsh
+        run: |
+          # Finding appsettings.json file in project
+          $appSettingsPath = Get-ChildItem -Path . -Recurse -Filter "appsettings.json" | Select-Object -First 1 -ExpandProperty FullName
+          if (-not $appSettingsPath) {
+              Write-Host "❌ appsettings.json not found!"
+              exit 1
+          }      
+
+          $jsonContent = Get-Content $appSettingsPath -Raw | ConvertFrom-Json      
+
+          if ($jsonContent.PSObject.Properties.Name -contains "ConnectionStrings" -and
+              $jsonContent.ConnectionStrings.PSObject.Properties.Name -contains "Default") {    
+
+              $jsonContent.ConnectionStrings.Default = "${{ secrets.SHIP_INFO_CONNECTION_STRING }}"
+      
+              $jsonContent | ConvertTo-Json -Depth 10 | Set-Content $appSettingsPath -Encoding UTF8
+      
+              Write-Host "✅ Successfully updated ConnectionStrings.Default in: $appSettingsPath"
+          } else {
+              Write-Host "⚠️ ConnectionStrings.Default not found in appsettings.json!"
+              exit 1
+          }
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
