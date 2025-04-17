@@ -62,4 +62,4 @@ jobs:
           server-username: ${{ secrets.SHIP_INFO_SERVER_USERNAME }}
           server-password: ${{ secrets.SHIP_INFO_SERVER_PASSWORD }}
           source-path: ./publish
-          destination-path: api
+          target-path: site\wwwroot\api
