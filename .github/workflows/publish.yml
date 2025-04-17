@@ -9,59 +9,65 @@ on:
 jobs:
   build_and_deploy:
     runs-on: windows-latest
+
     steps:
-      - name: 🛎 Checkout repository
+      - name: ⏬ Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🛠 Setup .NET 8 SDK
+      - name: 🛠 Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0
-          
-      - name: 📦 Restore dependencies
-        run: dotnet restore  
-        
-      - name: 🔧 Replace appsettings.json values
+
+      - name: 📦 Install dependencies
+        run: dotnet restore
+
+      - name: 🧾 Replace appsettings.json values
         shell: pwsh
         run: |
-          # Найдём appsettings.json
           $appSettingsPath = Get-ChildItem -Path . -Recurse -Filter "appsettings.json" | Select-Object -First 1 -ExpandProperty FullName
           if (-not $appSettingsPath) {
               Write-Host "❌ appsettings.json not found!"
               exit 1
-          }      
+          }
 
-          $jsonContent = Get-Content $appSettingsPath -Raw | ConvertFrom-Json      
+          $jsonContent = Get-Content $appSettingsPath -Raw | ConvertFrom-Json
 
           if ($jsonContent.PSObject.Properties.Name -contains "ConnectionStrings" -and
-              $jsonContent.ConnectionStrings.PSObject.Properties.Name -contains "Default") {    
+              $jsonContent.ConnectionStrings.PSObject.Properties.Name -contains "Default") {
 
               $jsonContent.ConnectionStrings.Default = "${{ secrets.SHIP_INFO_CONNECTION_STRING }}"
-      
+
               $jsonContent | ConvertTo-Json -Depth 10 | Set-Content $appSettingsPath -Encoding UTF8
-      
+
               Write-Host "✅ Successfully updated ConnectionStrings.Default in: $appSettingsPath"
           } else {
               Write-Host "⚠️ ConnectionStrings.Default not found in appsettings.json!"
               exit 1
           }
 
-      - name: 🧱 Build project
+      - name: 🛠 Build
         run: dotnet build --configuration Release --no-restore
-        
-      - name: 🚀 Publish project
-        run: dotnet publish --configuration Release --output ./publish --runtime win-x86 
 
-      - name: 🧪 Run tests
+      - name: 🚀 Publish (auto-detect .csproj)
+        shell: pwsh
+        run: |
+          $project = Get-ChildItem -Recurse -Filter *.csproj | Select-Object -First 1
+          if (-not $project) {
+            Write-Host "❌ .csproj file not found!"
+            exit 1
+          }
+
+          dotnet publish $project.FullName --configuration Release --output ./publish --runtime win-x86
+
+      - name: ✅ Test with .NET
         run: dotnet test
 
-      - name: 📁 Проверка папка api должна существовать на сервере
+      - name: 📂 Create api folder if not exists
         run: |
-          echo "⚠️ Убедитесь, что папка 'api' существует на сервере до начала деплоя."
-          echo "Если WebDeploy настроен на очистку — папка будет удалена перед деплоем."
-          echo "Создайте её вручную в site\\wwwroot\\api, если нужно."
+          mkdir publish\api
 
-      - name: 🚚 Deploy to MonsterASP.NET via WebDeploy
+      - name: 🚀 Deploy to MonsterASP.NET
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
           website-name: ${{ secrets.SHIP_INFO_WEBSITE_NAME }}
