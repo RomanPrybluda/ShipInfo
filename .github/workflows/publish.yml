@@ -61,5 +61,4 @@ jobs:
           server-computer-name: ${{ secrets.SHIP_INFO_SERVER_COMPUTER_NAME }}
           server-username: ${{ secrets.SHIP_INFO_SERVER_USERNAME }}
           server-password: ${{ secrets.SHIP_INFO_SERVER_PASSWORD }}
-          source-path: ./publish
-          target-path: site\wwwroot\api
+          target-path: wwwroot\api
