@@ -63,10 +63,6 @@ jobs:
       - name: ✅ Test with .NET
         run: dotnet test
 
-      - name: 📂 Create api folder if not exists
-        run: |
-          mkdir publish\api
-
       - name: 🚀 Deploy to MonsterASP.NET
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
@@ -74,4 +70,5 @@ jobs:
           server-computer-name: ${{ secrets.SHIP_INFO_SERVER_COMPUTER_NAME }}
           server-username: ${{ secrets.SHIP_INFO_SERVER_USERNAME }}
           server-password: ${{ secrets.SHIP_INFO_SERVER_PASSWORD }}
+          source-path: ./publish
           target-path: api
