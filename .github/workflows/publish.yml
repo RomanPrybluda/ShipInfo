@@ -19,46 +19,55 @@ jobs:
         with:
           dotnet-version: 8.0
 
+      - name: 📥 Ensure NuGet.org is available
+        run: dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org
+
       - name: 📦 Install dependencies
         run: dotnet restore
 
       - name: 🧾 Replace appsettings.json values
         shell: pwsh
         run: |
-          $appSettingsPath = Get-ChildItem -Path . -Recurse -Filter "appsettings.json" | Select-Object -First 1 -ExpandProperty FullName
+          $appSettingsPath = Get-ChildItem -Path . -Recurse -Filter "appsettings.json" |
+                              Select-Object -First 1 -ExpandProperty FullName
           if (-not $appSettingsPath) {
               Write-Host "❌ appsettings.json not found!"
               exit 1
           }
-
           $jsonContent = Get-Content $appSettingsPath -Raw | ConvertFrom-Json
-
           if ($jsonContent.PSObject.Properties.Name -contains "ConnectionStrings" -and
               $jsonContent.ConnectionStrings.PSObject.Properties.Name -contains "Default") {
-
               $jsonContent.ConnectionStrings.Default = "${{ secrets.SHIP_INFO_CONNECTION_STRING }}"
-
-              $jsonContent | ConvertTo-Json -Depth 10 | Set-Content $appSettingsPath -Encoding UTF8
-
-              Write-Host "✅ Successfully updated ConnectionStrings.Default in: $appSettingsPath"
+              $jsonContent | ConvertTo-Json -Depth 10 |
+                Set-Content $appSettingsPath -Encoding UTF8
+              Write-Host "✅ Successfully updated ConnectionStrings.Default"
           } else {
-              Write-Host "⚠️ ConnectionStrings.Default not found in appsettings.json!"
+              Write-Host "⚠️ ConnectionStrings.Default not found!"
               exit 1
           }
 
       - name: 🛠 Build
         run: dotnet build --configuration Release --no-restore
 
-      - name: 🚀 Publish (auto-detect .csproj)
+      - name: 🚀 Publish ShipInfo.WebAPI
+        run: dotnet publish ./ShipInfo.WebAPI/ShipInfo.WebAPI.csproj \
+              --configuration Release \
+              --output ./publish \
+              --runtime win-x86
+
+      - name: 📂 List publish output
+        run: dir ./publish
+
+      - name: 🗄 Create local API folder in publish
         shell: pwsh
         run: |
-          $project = Get-ChildItem -Recurse -Filter *.csproj | Select-Object -First 1
-          if (-not $project) {
-            Write-Host "❌ .csproj file not found!"
-            exit 1
+          $apiPath = Join-Path $PWD 'publish\api'
+          if (-not (Test-Path $apiPath)) {
+            New-Item -Path $apiPath -ItemType Directory | Out-Null
+            Write-Host "✅ Created local folder: $apiPath"
+          } else {
+            Write-Host "ℹ️ Folder already exists: $apiPath"
           }
-
-          dotnet publish $project.FullName --configuration Release --output ./publish --runtime win-x86
 
       - name: ✅ Test with .NET
         run: dotnet test
