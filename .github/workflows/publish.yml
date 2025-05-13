@@ -11,67 +11,75 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      # 1) Checkout
       - name: ⏬ Checkout repository
         uses: actions/checkout@v4
 
+      # 2) .NET 8 SDK
       - name: 🛠 Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0
 
+      # 3) NuGet.org
       - name: 📥 Ensure NuGet.org is available
         run: dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org
 
+      # 4) Restore
       - name: 📦 Install dependencies
         run: dotnet restore
 
+      # 5) Replace connection string
       - name: 🧾 Replace appsettings.json values
         shell: pwsh
         run: |
-          $appSettingsPath = Get-ChildItem -Path . -Recurse -Filter "appsettings.json" |
-                              Select-Object -First 1 -ExpandProperty FullName
+          $appSettingsPath = Get-ChildItem -Path $PWD -Recurse -Filter "appsettings.json" | Select-Object -First 1 -ExpandProperty FullName
           if (-not $appSettingsPath) {
               Write-Host "❌ appsettings.json not found!"
               exit 1
           }
-          $jsonContent = Get-Content $appSettingsPath -Raw | ConvertFrom-Json
-          if ($jsonContent.PSObject.Properties.Name -contains "ConnectionStrings" -and
-              $jsonContent.ConnectionStrings.PSObject.Properties.Name -contains "Default") {
-              $jsonContent.ConnectionStrings.Default = "${{ secrets.SHIP_INFO_CONNECTION_STRING }}"
-              $jsonContent | ConvertTo-Json -Depth 10 |
-                Set-Content $appSettingsPath -Encoding UTF8
-              Write-Host "✅ Successfully updated ConnectionStrings.Default"
+          $json = Get-Content $appSettingsPath -Raw | ConvertFrom-Json
+          if ($json.ConnectionStrings.Default) {
+            $json.ConnectionStrings.Default = "${{ secrets.SHIP_INFO_CONNECTION_STRING }}"
+            $json | ConvertTo-Json -Depth 10 | Set-Content $appSettingsPath -Encoding UTF8
+            Write-Host "✅ ConnectionStrings.Default updated"
           } else {
-              Write-Host "⚠️ ConnectionStrings.Default not found!"
-              exit 1
+            Write-Host "⚠️ ConnectionStrings.Default not found!"
+            exit 1
           }
 
+      # 6) Build
       - name: 🛠 Build
         run: dotnet build --configuration Release --no-restore
 
+      # 7) Publish into $GITHUB_WORKSPACE/publish
       - name: 🚀 Publish ShipInfo.WebAPI
-        run: dotnet publish ./ShipInfo.WebAPI/ShipInfo.WebAPI.csproj \
-              --configuration Release \
-              --output ./publish \
+        run: dotnet publish ./ShipInfo.WebAPI/ShipInfo.WebAPI.csproj `
+              --configuration Release `
+              --output "$GITHUB_WORKSPACE/publish" `
               --runtime win-x86
 
+      # 8) Debug: листинг содержимого publish
       - name: 📂 List publish output
-        run: dir ./publish
+        run: dir "$GITHUB_WORKSPACE/publish"
 
-      - name: 🗄 Create local API folder in publish
+      # 9) Создать локальную папку api в publish
+      - name: 🗄 Create local wwwroot/api folder
         shell: pwsh
         run: |
-          $apiPath = Join-Path $PWD 'publish\api'
-          if (-not (Test-Path $apiPath)) {
-            New-Item -Path $apiPath -ItemType Directory | Out-Null
-            Write-Host "✅ Created local folder: $apiPath"
+          $apiDir = Join-Path $Env:GITHUB_WORKSPACE 'publish\api'
+          if (-not (Test-Path $apiDir)) {
+            New-Item -ItemType Directory -Path $apiDir | Out-Null
+            Write-Host "✅ Created: $apiDir"
           } else {
-            Write-Host "ℹ️ Folder already exists: $apiPath"
+            Write-Host "ℹ️ Already exists: $apiDir"
           }
 
+      # 10) Тесты
       - name: ✅ Test with .NET
         run: dotnet test
 
+      # 11) Деплой
       - name: 🚀 Deploy to MonsterASP.NET
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
@@ -79,5 +87,7 @@ jobs:
           server-computer-name: ${{ secrets.SERVER_COMPUTER_NAME }}
           server-username: ${{ secrets.SERVER_USERNAME }}
           server-password: ${{ secrets.SERVER_PASSWORD }}
-          source-path: ./publish
+          # Абсолютный путь к локальной папке publish
+          source-path: ${{ github.workspace }}\publish
+          # Целевая папка на сервере (IIS/wwwroot/api)
           target-path: /api/
