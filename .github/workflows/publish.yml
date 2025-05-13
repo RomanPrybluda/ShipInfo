@@ -1,4 +1,4 @@
-name: Build, publish and deploy to MonsterASP.NET
+name: Build, publish, and deploy to MonsterASP.NET
 
 on:
   push:
@@ -11,75 +11,85 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # 1) Checkout
+      # 1) Checkout repository
       - name: ⏬ Checkout repository
         uses: actions/checkout@v4
 
-      # 2) .NET 8 SDK
+      # 2) Setup .NET 8
       - name: 🛠 Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0
+          dotnet-version: 8.0.x
 
-      # 3) NuGet.org
+      # 3) Ensure NuGet.org is available
       - name: 📥 Ensure NuGet.org is available
         run: dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org
 
-      # 4) Restore
+      # 4) Install dependencies
       - name: 📦 Install dependencies
         run: dotnet restore
 
-      # 5) Replace connection string
+      # 5) Replace appsettings.json values
       - name: 🧾 Replace appsettings.json values
         shell: pwsh
         run: |
-          $appSettingsPath = Get-ChildItem -Path $PWD -Recurse -Filter "appsettings.json" | Select-Object -First 1 -ExpandProperty FullName
+          $appSettingsPath = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Recurse -Filter "appsettings.json" | Select-Object -First 1 -ExpandProperty FullName
           if (-not $appSettingsPath) {
-              Write-Host "❌ appsettings.json not found!"
+              Write-Error "❌ appsettings.json not found!"
               exit 1
           }
           $json = Get-Content $appSettingsPath -Raw | ConvertFrom-Json
           if ($json.ConnectionStrings.Default) {
-            $json.ConnectionStrings.Default = "${{ secrets.SHIP_INFO_CONNECTION_STRING }}"
-            $json | ConvertTo-Json -Depth 10 | Set-Content $appSettingsPath -Encoding UTF8
-            Write-Host "✅ ConnectionStrings.Default updated"
+              $json.ConnectionStrings.Default = "${{ secrets.SHIP_INFO_CONNECTION_STRING }}"
+              $json | ConvertTo-Json -Depth 10 | Set-Content $appSettingsPath -Encoding UTF8
+              Write-Host "✅ ConnectionStrings.Default updated"
           } else {
-            Write-Host "⚠️ ConnectionStrings.Default not found!"
-            exit 1
+              Write-Error "⚠️ ConnectionStrings.Default not found!"
+              exit 1
           }
 
       # 6) Build
       - name: 🛠 Build
         run: dotnet build --configuration Release --no-restore
 
-      # 7) Publish into $GITHUB_WORKSPACE/publish
+      # 7) Publish ShipInfo.WebAPI
       - name: 🚀 Publish ShipInfo.WebAPI
-        run: dotnet publish ./ShipInfo.WebAPI/ShipInfo.WebAPI.csproj `
-              --configuration Release `
-              --output "$GITHUB_WORKSPACE/publish" `
-              --runtime win-x86
+        run: |
+          dotnet publish ./ShipInfo.WebAPI/ShipInfo.WebAPI.csproj `
+            --configuration Release `
+            --output "${{ github.workspace }}/publish" `
+            --no-restore `
+            --no-build
 
-      # 8) Debug: content listing publish
-      - name: 📂 List publish output
-        run: dir "$GITHUB_WORKSPACE/publish"
-
-      # 9) Create a local api folder in publish
-      - name: 🗄 Create local wwwroot/api folder
+      # 8) Verify publish output
+      - name: 📂 Verify publish output
         shell: pwsh
         run: |
-          $apiDir = Join-Path $Env:GITHUB_WORKSPACE 'publish\api'
-          if (-not (Test-Path $apiDir)) {
-            New-Item -ItemType Directory -Path $apiDir | Out-Null
-            Write-Host "✅ Created: $apiDir"
-          } else {
-            Write-Host "ℹ️ Already exists: $apiDir"
+          $publishDir = "${{ github.workspace }}\publish"
+          if (-not (Test-Path $publishDir)) {
+              Write-Error "❌ Publish folder not found at $publishDir!"
+              exit 1
           }
+          Get-ChildItem -Path $publishDir -Recurse | ForEach-Object { Write-Host "📄 Found: $($_.FullName)" }
 
-      # 10) Tests
+      # 9) Create local api folder in publish (if needed)
+      - name: 🗄 Move files to api subfolder
+        shell: pwsh
+        run: |
+          $publishDir = "${{ github.workspace }}\publish"
+          $apiDir = "${{ github.workspace }}\publish\api"
+          if (-not (Test-Path $apiDir)) {
+              New-Item -ItemType Directory -Path $apiDir | Out-Null
+              Write-Host "✅ Created: $apiDir"
+          }
+          Get-ChildItem -Path $publishDir | Where-Object { $_.FullName -ne $apiDir } | Move-Item -Destination $apiDir
+          Write-Host "✅ Moved publish contents to $apiDir"
+
+      # 10) Run tests
       - name: ✅ Test with .NET
-        run: dotnet test
+        run: dotnet test --no-restore --no-build
 
-      # 11) Deploy
+      # 11) Deploy to MonsterASP.NET
       - name: 🚀 Deploy to MonsterASP.NET
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
@@ -87,7 +97,5 @@ jobs:
           server-computer-name: ${{ secrets.SERVER_COMPUTER_NAME }}
           server-username: ${{ secrets.SERVER_USERNAME }}
           server-password: ${{ secrets.SERVER_PASSWORD }}
-          # Absolute path to local publish folder
-          source-path: ${{ github.workspace }}/publish
-          # Target folder on server (IIS/wwwroot/api)
-          target-path: /api/
+          source-path: ${{ github.workspace }}\publish\api
+          target-path: wwwroot/api
