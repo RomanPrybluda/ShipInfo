@@ -21,13 +21,22 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      # 3) Ensure NuGet.org is available
-      - name: 📥 Ensure NuGet.org is available
-        run: dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org
+      # 3) Configure NuGet sources
+      - name: 📥 Configure NuGet sources
+        shell: pwsh
+        run: |
+          Write-Host "🧹 Clearing existing NuGet sources"
+          dotnet nuget remove source nuget.org --ignore-fail
+          dotnet nuget remove source "Microsoft Visual Studio Offline Packages" --ignore-fail
+          Write-Host "➕ Adding nuget.org source"
+          dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org
+          Write-Host "📋 Listing NuGet sources"
+          dotnet nuget list source
 
       # 4) Install dependencies
       - name: 📦 Install dependencies
-        run: dotnet restore
+        run: dotnet restore --source https://api.nuget.org/v3/index.json
+        shell: pwsh
 
       # 5) Replace appsettings.json values
       - name: 🧾 Replace appsettings.json values
@@ -84,7 +93,7 @@ jobs:
       - name: 🗄 Move files to api subfolder
         shell: pwsh
         run: |
-          $publishDir = "${{ github.workflow }}\publish"
+          $publishDir = "${{ github.workspace }}\publish"
           $apiDir = "${{ github.workspace }}\publish\api"
           if (-not (Test-Path $apiDir)) {
               New-Item -ItemType Directory -Path $apiDir | Out-Null
