@@ -1,7 +1,7 @@
 ### ShipInfo
 The service provides access to information about civil fleet vessels.
 
-Site swagger link [ship-info](http://ship-info.runasp.net/swagger/index.html)
+Site swagger link [Ship-Info](http://ship-info.runasp.net/swagger/index.html)
 
 ### User Story
 #### Registered users
