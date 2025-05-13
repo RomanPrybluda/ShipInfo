@@ -60,6 +60,7 @@ jobs:
             --output "${{ github.workspace }}/publish" `
             --no-restore `
             --no-build
+        shell: pwsh
 
       # 8) Verify publish output
       - name: 📂 Verify publish output
@@ -70,9 +71,10 @@ jobs:
               Write-Error "❌ Publish folder not found at $publishDir!"
               exit 1
           }
+          Write-Host "✅ Publish folder found at $publishDir"
           Get-ChildItem -Path $publishDir -Recurse | ForEach-Object { Write-Host "📄 Found: $($_.FullName)" }
 
-      # 9) Create local api folder in publish (if needed)
+      # 9) Move files to api subfolder
       - name: 🗄 Move files to api subfolder
         shell: pwsh
         run: |
@@ -84,6 +86,7 @@ jobs:
           }
           Get-ChildItem -Path $publishDir | Where-Object { $_.FullName -ne $apiDir } | Move-Item -Destination $apiDir
           Write-Host "✅ Moved publish contents to $apiDir"
+          Get-ChildItem -Path $apiDir -Recurse | ForEach-Object { Write-Host "📄 API folder content: $($_.FullName)" }
 
       # 10) Run tests
       - name: ✅ Test with .NET
