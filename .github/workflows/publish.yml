@@ -54,13 +54,19 @@ jobs:
 
       # 7) Publish ShipInfo.WebAPI
       - name: 🚀 Publish ShipInfo.WebAPI
+        shell: pwsh
         run: |
+          $publishDir = "${{ github.workspace }}\publish"
+          if (Test-Path $publishDir) {
+              Remove-Item -Path $publishDir -Recurse -Force
+              Write-Host "🗑 Cleared existing publish folder: $publishDir"
+          }
           dotnet publish ./ShipInfo.WebAPI/ShipInfo.WebAPI.csproj `
             --configuration Release `
-            --output "${{ github.workspace }}/publish" `
+            --output $publishDir `
             --no-restore `
             --no-build
-        shell: pwsh
+          Write-Host "✅ Published to: $publishDir"
 
       # 8) Verify publish output
       - name: 📂 Verify publish output
@@ -78,7 +84,7 @@ jobs:
       - name: 🗄 Move files to api subfolder
         shell: pwsh
         run: |
-          $publishDir = "${{ github.workspace }}\publish"
+          $publishDir = "${{ github.workflow }}\publish"
           $apiDir = "${{ github.workspace }}\publish\api"
           if (-not (Test-Path $apiDir)) {
               New-Item -ItemType Directory -Path $apiDir | Out-Null
