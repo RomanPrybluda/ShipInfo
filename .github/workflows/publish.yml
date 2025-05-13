@@ -59,11 +59,11 @@ jobs:
               --output "$GITHUB_WORKSPACE/publish" `
               --runtime win-x86
 
-      # 8) Debug: листинг содержимого publish
+      # 8) Debug: content listing publish
       - name: 📂 List publish output
         run: dir "$GITHUB_WORKSPACE/publish"
 
-      # 9) Создать локальную папку api в publish
+      # 9) Create a local api folder in publish
       - name: 🗄 Create local wwwroot/api folder
         shell: pwsh
         run: |
@@ -75,11 +75,11 @@ jobs:
             Write-Host "ℹ️ Already exists: $apiDir"
           }
 
-      # 10) Тесты
+      # 10) Tests
       - name: ✅ Test with .NET
         run: dotnet test
 
-      # 11) Деплой
+      # 11) Deploy
       - name: 🚀 Deploy to MonsterASP.NET
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
@@ -87,7 +87,7 @@ jobs:
           server-computer-name: ${{ secrets.SERVER_COMPUTER_NAME }}
           server-username: ${{ secrets.SERVER_USERNAME }}
           server-password: ${{ secrets.SERVER_PASSWORD }}
-          # Абсолютный путь к локальной папке publish
+          # Absolute path to local publish folder
           source-path: ${{ github.workspace }}/publish
-          # Целевая папка на сервере (IIS/wwwroot/api)
+          # Target folder on server (IIS/wwwroot/api)
           target-path: /api/
