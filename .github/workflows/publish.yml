@@ -88,6 +88,6 @@ jobs:
           server-username: ${{ secrets.SERVER_USERNAME }}
           server-password: ${{ secrets.SERVER_PASSWORD }}
           # Абсолютный путь к локальной папке publish
-          source-path: ${{ github.workspace }}\publish
+          source-path: ${{ github.workspace }}/publish
           # Целевая папка на сервере (IIS/wwwroot/api)
           target-path: /api/
