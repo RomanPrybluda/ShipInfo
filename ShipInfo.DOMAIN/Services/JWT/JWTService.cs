@@ -24,7 +24,7 @@ namespace ShipInfo.DOMAIN
 
             var claim = new List<Claim>();
             claim.Add(new Claim("sub", userId));
-            claim.Add(new Claim("email", userId));
+            claim.Add(new Claim("email", email));
 
             var user = await _userManager.FindByIdAsync(userId);
             var userRoles = await _userManager.GetRolesAsync(user);
